@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Инна Хацкевич](https://up.htmlacademy.ru/javascript/17/user/527159).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хапов].
 
 ---
 
