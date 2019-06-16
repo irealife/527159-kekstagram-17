@@ -31,7 +31,7 @@ function getObject() {
     likes: randomInteger(15, 200),
     comments: []
   };
-  for (var i = 0; i < randomInteger(1, 2); i++){
+  for (var i = 0; i < randomInteger(1, 2); i++) {
     var comment = {
       avatar: 'img/avatar-' + randomInteger(1, 6) + '.svg',
       message: COMMENTS[randomInteger(0, COMMENTS.length - 1)],
