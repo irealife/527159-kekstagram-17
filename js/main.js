@@ -1,6 +1,5 @@
 'use strict';
 
-var OBJECTS = [];
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -18,6 +17,12 @@ var NAMES = [
   'Стас',
   'Миша'
 ];
+var MAX_PHOTO = 25;
+var MIN_LIKES = 15;
+var MAX_LIKES = 200;
+var MAX_NUM_AVATAR = 6;
+var picturesData = [];
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 function randomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -25,42 +30,47 @@ function randomInteger(min, max) {
   return rand;
 }
 
-function getObject() {
-  var object = {
-    url: 'photos/' + randomInteger(1, 25) + '.jpg',
-    likes: randomInteger(15, 200),
-    comments: []
-  };
+function getComments() {
+  var comments = [];
   for (var i = 0; i < randomInteger(1, 2); i++) {
     var comment = {
-      avatar: 'img/avatar-' + randomInteger(1, 6) + '.svg',
+      avatar: 'img/avatar-' + randomInteger(1, MAX_NUM_AVATAR) + '.svg',
       message: COMMENTS[randomInteger(0, COMMENTS.length - 1)],
       name: NAMES[randomInteger(0, NAMES.length - 1)]
     };
-    object.comments.push(comment);
+    comments.push(comment);
   }
+  return comments;
+}
+
+function getObject(i) {
+  var object = {
+    url: 'photos/' + i + '.jpg',
+    likes: randomInteger(MIN_LIKES, MAX_LIKES),
+    comments: getComments()
+  };
   return object;
 }
 
-function generateDOMelement(object) {
-  var template = document.querySelector('#picture').cloneNode(true);
-  template.content.querySelector('.picture__img').setAttribute('src', object.url);
-  template.content.querySelector('.picture__likes').textContent = object.likes.toString();
-  template.content.querySelector('.picture__comments').textContent = object.comments.length.toString();
-  return template.content;
+function generatePicture(object) {
+  var pictureElement = pictureTemplate.cloneNode(true);
+  pictureElement.querySelector('.picture__img').setAttribute('src', object.url);
+  pictureElement.querySelector('.picture__likes').textContent = object.likes.toString();
+  pictureElement.querySelector('.picture__comments').textContent = object.comments.length.toString();
+  return pictureElement;
 }
 
 function generateObjectsArray() {
-  for (var i = 0; i < 25; i++) {
-    OBJECTS.push(getObject());
+  for (var i = 1; i <= MAX_PHOTO; i++) {
+    picturesData.push(getObject(i));
   }
 }
 
 function renderObjects() {
   var fragment = document.createDocumentFragment();
   var pictures = document.querySelector('.pictures');
-  OBJECTS.forEach(function (object) {
-    fragment.appendChild(generateDOMelement(object));
+  picturesData.forEach(function (object) {
+    fragment.appendChild(generatePicture(object));
   });
   pictures.appendChild(fragment);
 }
