@@ -21,6 +21,7 @@ var MAX_PHOTO = 25;
 var MIN_LIKES = 15;
 var MAX_LIKES = 200;
 var MAX_NUM_AVATAR = 6;
+var MAX_COMMENTS = 10;
 var picturesData = [];
 var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -32,7 +33,7 @@ function randomInteger(min, max) {
 
 function getComments() {
   var comments = [];
-  for (var i = 0; i < randomInteger(1, 2); i++) {
+  for (var i = 0; i < randomInteger(1, MAX_COMMENTS); i++) {
     var comment = {
       avatar: 'img/avatar-' + randomInteger(1, MAX_NUM_AVATAR) + '.svg',
       message: COMMENTS[randomInteger(0, COMMENTS.length - 1)],
@@ -43,37 +44,37 @@ function getComments() {
   return comments;
 }
 
-function getObject(i) {
-  var object = {
+function pictureObject(i) {
+  var image = {
     url: 'photos/' + i + '.jpg',
     likes: randomInteger(MIN_LIKES, MAX_LIKES),
     comments: getComments()
   };
-  return object;
+  return image;
 }
 
-function generatePicture(object) {
+function generatePicture(image) {
   var pictureElement = pictureTemplate.cloneNode(true);
-  pictureElement.querySelector('.picture__img').src = object.url;
-  pictureElement.querySelector('.picture__likes').textContent = object.likes.toString();
-  pictureElement.querySelector('.picture__comments').textContent = object.comments.length.toString();
+  pictureElement.querySelector('.picture__img').src = image.url;
+  pictureElement.querySelector('.picture__likes').textContent = image.likes.toString();
+  pictureElement.querySelector('.picture__comments').textContent = image.comments.length.toString();
   return pictureElement;
 }
 
 function generateObjectsArray() {
   for (var i = 1; i <= MAX_PHOTO; i++) {
-    picturesData.push(getObject(i));
+    picturesData.push(pictureObject(i));
   }
 }
 
-function renderObjects() {
+function renderPictures() {
   var fragment = document.createDocumentFragment();
   var pictures = document.querySelector('.pictures');
-  picturesData.forEach(function (object) {
-    fragment.appendChild(generatePicture(object));
+  picturesData.forEach(function (image) {
+    fragment.appendChild(generatePicture(image));
   });
   pictures.appendChild(fragment);
 }
 
 generateObjectsArray();
-renderObjects();
+renderPictures();
