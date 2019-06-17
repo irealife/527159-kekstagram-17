@@ -61,7 +61,7 @@ function generatePicture(image) {
   return pictureElement;
 }
 
-function generateObjectsArray() {
+function generatePicturesArray() {
   for (var i = 1; i <= MAX_PHOTO; i++) {
     picturesData.push(pictureObject(i));
   }
@@ -76,5 +76,5 @@ function renderPictures() {
   pictures.appendChild(fragment);
 }
 
-generateObjectsArray();
+generatePicturesArray();
 renderPictures();
