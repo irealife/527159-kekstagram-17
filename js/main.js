@@ -54,7 +54,7 @@ function getObject(i) {
 
 function generatePicture(object) {
   var pictureElement = pictureTemplate.cloneNode(true);
-  pictureElement.querySelector('.picture__img').setAttribute('src', object.url);
+  pictureElement.querySelector('.picture__img').src = object.url;
   pictureElement.querySelector('.picture__likes').textContent = object.likes.toString();
   pictureElement.querySelector('.picture__comments').textContent = object.comments.length.toString();
   return pictureElement;
