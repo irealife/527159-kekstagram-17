@@ -44,7 +44,7 @@ function getComments() {
   return comments;
 }
 
-function pictureObject(i) {
+function getPictureData(i) {
   var image = {
     url: 'photos/' + i + '.jpg',
     likes: randomInteger(MIN_LIKES, MAX_LIKES),
@@ -53,17 +53,17 @@ function pictureObject(i) {
   return image;
 }
 
-function generatePicture(image) {
+function generatePicture(imageData) {
   var pictureElement = pictureTemplate.cloneNode(true);
-  pictureElement.querySelector('.picture__img').src = image.url;
-  pictureElement.querySelector('.picture__likes').textContent = image.likes.toString();
-  pictureElement.querySelector('.picture__comments').textContent = image.comments.length.toString();
+  pictureElement.querySelector('.picture__img').src = imageData.url;
+  pictureElement.querySelector('.picture__likes').textContent = imageData.likes.toString();
+  pictureElement.querySelector('.picture__comments').textContent = imageData.comments.length.toString();
   return pictureElement;
 }
 
-function generatePicturesArray() {
+function generatePicturesData() {
   for (var i = 1; i <= MAX_PHOTO; i++) {
-    picturesData.push(pictureObject(i));
+    picturesData.push(getPictureData(i));
   }
 }
 
@@ -76,5 +76,5 @@ function renderPictures() {
   pictures.appendChild(fragment);
 }
 
-generatePicturesArray();
+generatePicturesData();
 renderPictures();
