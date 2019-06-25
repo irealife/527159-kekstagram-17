@@ -194,9 +194,9 @@ function controlScale(direction) {
 
 // НАЛОЖЕНИЕ ЭФФЕКТА
 
-function handleSlider(point) {
-  if (dragging && point.clientX >= minLeftPx && point.clientX <= maxRightPx) {
-    var offset = Math.floor(point.clientX - minLeftPx);
+function handleSlider(mouseX) {
+  if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
+    var offset = Math.floor(mouseX - minLeftPx);
     effectValue = Math.floor((offset * 100) / (maxRightPx - minLeftPx));
 
     effectPin.style.left = effectValue + '%';
@@ -207,7 +207,7 @@ function handleSlider(point) {
 }
 
 window.addEventListener('mousemove', function (evt) {
-  handleSlider(evt);
+  handleSlider(evt.clientX);
 });
 
 function applyEffectDepth() {
@@ -236,18 +236,16 @@ function applyEffectDepth() {
   loadPicture.style.filter = effectTypeValue;
 }
 
-function effectsWorker(styleEffect) {
-  if (styleEffect.target.checked) {
-    effectType = styleEffect.target.value;
+function effectsWorker(evt) {
+  if (evt.target.checked) {
+    effectType = evt.target.value;
     effectValue = 100;
     effectPin.style.left = '' + effectValue + '%';
     effectDepth.style.width = '' + effectValue + '%';
     loadPicture.className = '';
     loadPicture.style.filter = '';
-    loadPicture.classList.add('effects__preview--' + styleEffect.target.value);
-
-    var valueNone = styleEffect.target.value === 'none';
-    effectLevel.classList.toggle('hidden', valueNone);
+    loadPicture.classList.add('effects__preview--' + evt.target.value);
+    effectLevel.classList.toggle('hidden', evt.target.value === 'none');
   }
 }
 
