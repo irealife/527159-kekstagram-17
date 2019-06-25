@@ -102,6 +102,7 @@ var onCloseClick = document.querySelector('#upload-cancel');
 
 var scalePhoto = document.querySelector('.img-upload__scale');
 var resizeValue = scalePhoto.querySelector('.scale__control--value');
+var effectLevel = document.querySelector('.effect-level');
 
 function fillValues() {
   loadPicture = document.querySelector('.img-upload__preview img');
@@ -140,8 +141,7 @@ function openEditPhoto() {
   loadPicture.style.filter = '';
   effectType = 'none';
   applyEffectDepth();
-  var effectLevel = document.querySelector('.effect-level');
-  effectLevel.classList.toggle('hidden', true);
+  effectLevel.classList.add('hidden');
 }
 
 function closeEditPhoto() {
@@ -194,9 +194,9 @@ function controlScale(direction) {
 
 // НАЛОЖЕНИЕ ЭФФЕКТА
 
-function scrollPin(evt) {
-  if (dragging && evt.clientX >= minLeftPx && evt.clientX <= maxRightPx) {
-    var offset = Math.floor(evt.clientX - minLeftPx);
+function handleSlider(point) {
+  if (dragging && point.clientX >= minLeftPx && point.clientX <= maxRightPx) {
+    var offset = Math.floor(point.clientX - minLeftPx);
     effectValue = Math.floor((offset * 100) / (maxRightPx - minLeftPx));
 
     effectPin.style.left = effectValue + '%';
@@ -207,7 +207,7 @@ function scrollPin(evt) {
 }
 
 window.addEventListener('mousemove', function (evt) {
-  scrollPin(evt);
+  handleSlider(evt);
 });
 
 function applyEffectDepth() {
@@ -246,18 +246,15 @@ function effectsWorker(styleEffect) {
     loadPicture.style.filter = '';
     loadPicture.classList.add('effects__preview--' + styleEffect.target.value);
 
-    if (styleEffect.target.value === 'none') {
-      document.querySelector('.effect-level').classList.toggle('hidden', true);
-    } else {
-      document.querySelector('.effect-level').classList.toggle('hidden', false);
-    }
+    var valueNone = styleEffect.target.value === 'none';
+    effectLevel.classList.toggle('hidden', valueNone);
   }
 }
 
 function addEffectsActions() {
-  document.querySelectorAll('.effects__radio').forEach(function (parent) {
-    parent.addEventListener('change', function (useEffect) {
-      effectsWorker(useEffect);
+  document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
+    radioButton.addEventListener('change', function (evt) {
+      effectsWorker(evt);
     });
   });
 }
