@@ -22,10 +22,14 @@ var MIN_LIKES = 15;
 var MAX_LIKES = 200;
 var MAX_NUM_AVATAR = 6;
 var MAX_COMMENTS = 10;
+var MIN_SIZE = 25;
+var MAX_SIZE = 100;
+var INDENT_LEFT = 68;
+var STEP = 25;
+
 var picturesData = [];
 var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-var INDENT_LEFT = 68;
 var effectType = 'none';
 var effectValue;
 var dragging = false;
@@ -126,7 +130,7 @@ function onEditPhotoEscPress(evt) {
 }
 
 function openEditPhoto() {
-  overlayPhoto.classList.toggle('hidden', false);
+  overlayPhoto.classList.remove('hidden');
   document.addEventListener('keydown', onEditPhotoEscPress);
   fillValues();
   effectValue = 100;
@@ -137,11 +141,11 @@ function openEditPhoto() {
   effectType = 'none';
   applyEffectDepth();
   var effectLevel = document.querySelector('.effect-level');
-  effectLevel.style.display = 'none';
+  effectLevel.classList.toggle('hidden', true);
 }
 
 function closeEditPhoto() {
-  overlayPhoto.classList.toggle('hidden', true);
+  overlayPhoto.classList.add('hidden');
   document.removeEventListener('keydown', onEditPhotoEscPress);
   uploadPhoto.value = '';
 }
@@ -161,10 +165,6 @@ onCloseClick.addEventListener('click', function () {
 var controlSmall = scalePhoto.querySelector('.scale__control--smaller');
 var controlBig = scalePhoto.querySelector('.scale__control--bigger');
 var uploadPreviewPhoto = document.querySelector('.img-upload__preview');
-
-var MIN_SIZE = 25;
-var MAX_SIZE = 100;
-var STEP = 25;
 var currentSize = 100;
 
 function changeScale() {
@@ -180,12 +180,11 @@ controlBig.addEventListener('click', function () {
 });
 
 
-function controlScale(line) {
-  currentSize = currentSize + STEP * line;
+function controlScale(direction) {
+  currentSize = currentSize + STEP * direction;
   if (currentSize < MIN_SIZE) {
     currentSize = MIN_SIZE;
-  }
-  if (currentSize > MAX_SIZE) {
+  } else if (currentSize > MAX_SIZE) {
     currentSize = MAX_SIZE;
   }
   resizeValue.value = currentSize + '%';
@@ -195,69 +194,70 @@ function controlScale(line) {
 
 // НАЛОЖЕНИЕ ЭФФЕКТА
 
-window.addEventListener('mousemove', function (evt) {
+function scrollPin(evt) {
   if (dragging && evt.clientX >= minLeftPx && evt.clientX <= maxRightPx) {
     var offset = Math.floor(evt.clientX - minLeftPx);
     effectValue = Math.floor((offset * 100) / (maxRightPx - minLeftPx));
 
-    if (effectValue < 0) {
-      effectValue = 0;
-    }
-    if (effectValue > 100) {
-      effectValue = 100;
-    }
-    effectPin.style.left = '' + effectValue + '%';
-    effectDepth.style.width = '' + effectValue + '%';
+    effectPin.style.left = effectValue + '%';
+    effectDepth.style.width = effectValue + '%';
     effectVal.value = effectValue;
     applyEffectDepth();
   }
+}
+
+window.addEventListener('mousemove', function (evt) {
+  scrollPin(evt);
 });
 
 function applyEffectDepth() {
+  var effectTypeValue;
   switch (effectType) {
     case 'chrome':
-      loadPicture.style.filter = 'grayscale(' + (effectValue / 100) + ')';
+      effectTypeValue = 'grayscale(' + (effectValue / 100) + ')';
       break;
     case 'sepia':
-      loadPicture.style.filter = 'sepia(' + (effectValue / 100) + ')';
+      effectTypeValue = 'sepia(' + (effectValue / 100) + ')';
       break;
     case 'marvin':
-      loadPicture.style.filter = 'invert(' + effectValue + '%)';
+      effectTypeValue = 'invert(' + effectValue + '%)';
       break;
     case 'phobos':
-      loadPicture.style.filter = 'blur(' + Math.round((effectValue * 3) / 100) + 'px)';
+      effectTypeValue = 'blur(' + Math.round((effectValue * 3) / 100) + 'px)';
       break;
     case 'heat':
       var value = Math.round((effectValue * 3) / 100);
       if (value < 1) {
         value = 1;
       }
-      loadPicture.style.filter = 'brightness(' + value + ')';
+      effectTypeValue = 'brightness(' + value + ')';
       break;
   }
+  loadPicture.style.filter = effectTypeValue;
 }
 
-function effectsWorker(node) {
-  if (node.target.checked) {
-    effectType = node.target.value;
+function effectsWorker(styleEffect) {
+  if (styleEffect.target.checked) {
+    effectType = styleEffect.target.value;
     effectValue = 100;
     effectPin.style.left = '' + effectValue + '%';
     effectDepth.style.width = '' + effectValue + '%';
     loadPicture.className = '';
     loadPicture.style.filter = '';
-    loadPicture.classList.add('effects__preview--' + node.target.value);
-    if (node.target.value === 'none') {
-      document.querySelector('.effect-level').style.display = 'none';
+    loadPicture.classList.add('effects__preview--' + styleEffect.target.value);
+
+    if (styleEffect.target.value === 'none') {
+      document.querySelector('.effect-level').classList.toggle('hidden', true);
     } else {
-      document.querySelector('.effect-level').style.display = 'block';
+      document.querySelector('.effect-level').classList.toggle('hidden', false);
     }
   }
 }
 
 function addEffectsActions() {
   document.querySelectorAll('.effects__radio').forEach(function (parent) {
-    parent.addEventListener('change', function (child) {
-      effectsWorker(child);
+    parent.addEventListener('change', function (useEffect) {
+      effectsWorker(useEffect);
     });
   });
 }
