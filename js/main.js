@@ -251,8 +251,8 @@ function effectsWorker(radioButton) {
 
 function addEffectsActions() {
   document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
-    radioButton.addEventListener('change', function (evt) {
-      effectsWorker(evt.target);
+    radioButton.addEventListener('change', function () {
+      effectsWorker(radioButton);
     });
   });
 }
