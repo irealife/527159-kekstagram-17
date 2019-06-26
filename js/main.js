@@ -224,10 +224,10 @@ function applyEffectDepth() {
       effectTypeValue = 'invert(' + effectValue + '%)';
       break;
     case 'phobos':
-      effectTypeValue = 'blur(' + Math.round((effectValue * 3) / 100) + 'px)';
+      effectTypeValue = 'blur(' + (effectValue * 3) / 100 + 'px)';
       break;
     case 'heat':
-      var value = Math.round((effectValue * 3) / 100);
+      var value = (effectValue * 3) / 100;
       if (value < 1) {
         value = 1;
       }
