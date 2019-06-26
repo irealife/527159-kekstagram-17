@@ -60,12 +60,11 @@ function getComments() {
 }
 
 function getPictureData(i) {
-  var picturePost = {
+  return {
     url: 'photos/' + i + '.jpg',
     likes: randomInteger(MIN_LIKES, MAX_LIKES),
     comments: getComments()
   };
-  return picturePost;
 }
 
 function generatePicture(imageData) {
@@ -126,7 +125,9 @@ function fillValues() {
 
 function onEditPhotoEscPress(evt) {
   if (evt.keyCode === 27) {
-    closeEditPhoto();
+    if (document.activeElement !== document.querySelector('.text__description')) {
+      closeEditPhoto();
+    }
   }
 }
 
