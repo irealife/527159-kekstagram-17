@@ -103,6 +103,8 @@ var scalePhoto = document.querySelector('.img-upload__scale');
 var resizeValue = scalePhoto.querySelector('.scale__control--value');
 var effectLevel = document.querySelector('.effect-level');
 
+var inputComments = document.querySelector('.text__description');
+
 function fillValues() {
   loadPicture = document.querySelector('.img-upload__preview img');
   effectVal = document.querySelector('.effect-level__value');
@@ -124,10 +126,8 @@ function fillValues() {
 }
 
 function onEditPhotoEscPress(evt) {
-  if (evt.keyCode === 27) {
-    if (document.activeElement !== document.querySelector('.text__description')) {
-      closeEditPhoto();
-    }
+  if (evt.keyCode === 27 && document.activeElement !== inputComments) {
+    closeEditPhoto();
   }
 }
 
