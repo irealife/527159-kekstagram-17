@@ -236,23 +236,23 @@ function applyEffectDepth() {
   loadPicture.style.filter = effectTypeValue;
 }
 
-function effectsWorker(evt) {
-  if (evt.target.checked) {
-    effectType = evt.target.value;
+function effectsWorker(radioButton) {
+  if (radioButton.checked) {
+    effectType = radioButton.value;
     effectValue = 100;
     effectPin.style.left = '' + effectValue + '%';
     effectDepth.style.width = '' + effectValue + '%';
     loadPicture.className = '';
     loadPicture.style.filter = '';
-    loadPicture.classList.add('effects__preview--' + evt.target.value);
-    effectLevel.classList.toggle('hidden', evt.target.value === 'none');
+    loadPicture.classList.add('effects__preview--' + radioButton.value);
+    effectLevel.classList.toggle('hidden', radioButton.value === 'none');
   }
 }
 
 function addEffectsActions() {
   document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
     radioButton.addEventListener('change', function (evt) {
-      effectsWorker(evt);
+      effectsWorker(evt.target);
     });
   });
 }
