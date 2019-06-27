@@ -149,6 +149,7 @@ function closeEditPhoto() {
   overlayPhoto.classList.add('hidden');
   document.removeEventListener('keydown', onEditPhotoEscPress);
   uploadPhoto.value = '';
+  inputComments.value = '';
 }
 
 uploadPhoto.addEventListener('change', function () {
@@ -203,9 +204,6 @@ function handleSlider(mouseX) {
     effectPin.style.left = effectValue + '%';
 
     effectDepth.style.width = effectValue + '%';
-    if (effectType === 'heat') {
-      effectValue = 33.33 + Math.floor((offset * 100) / (width + width / 2));
-    }
     effectVal.value = effectValue;
     applyEffectDepth();
   }
@@ -231,8 +229,7 @@ function applyEffectDepth() {
       effectTypeValue = 'blur(' + (effectValue * 3) / 100 + 'px)';
       break;
     case 'heat':
-      var tmpValue = Number((effectValue * 3) / 100);
-      var value = tmpValue.toFixed(1);
+      var value = ((effectValue * 2) / 100) + 1;
       effectTypeValue = 'brightness(' + value + ')';
       break;
   }
