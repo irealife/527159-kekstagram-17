@@ -198,10 +198,14 @@ function controlScale(direction) {
 function handleSlider(mouseX) {
   if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
     var offset = Math.floor(mouseX - minLeftPx);
-    effectValue = Math.floor((offset * 100) / (maxRightPx - minLeftPx));
-
+    var width = maxRightPx - minLeftPx;
+    effectValue = Math.floor((offset * 100) / width);
     effectPin.style.left = effectValue + '%';
+
     effectDepth.style.width = effectValue + '%';
+    if (effectType === 'heat') {
+      effectValue = 33.33 + Math.floor((offset * 100) / (width + width / 2));
+    }
     effectVal.value = effectValue;
     applyEffectDepth();
   }
@@ -227,10 +231,8 @@ function applyEffectDepth() {
       effectTypeValue = 'blur(' + (effectValue * 3) / 100 + 'px)';
       break;
     case 'heat':
-      var value = (effectValue * 3) / 100;
-      if (value < 1) {
-        value = 1;
-      }
+      var tmpValue = Number((effectValue * 3) / 100);
+      var value = tmpValue.toFixed(1);
       effectTypeValue = 'brightness(' + value + ')';
       break;
   }
