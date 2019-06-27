@@ -149,6 +149,7 @@ function closeEditPhoto() {
   overlayPhoto.classList.add('hidden');
   document.removeEventListener('keydown', onEditPhotoEscPress);
   uploadPhoto.value = '';
+  inputComments.value = '';
 }
 
 uploadPhoto.addEventListener('change', function () {
@@ -198,9 +199,10 @@ function controlScale(direction) {
 function handleSlider(mouseX) {
   if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
     var offset = Math.floor(mouseX - minLeftPx);
-    effectValue = Math.floor((offset * 100) / (maxRightPx - minLeftPx));
-
+    var width = maxRightPx - minLeftPx;
+    effectValue = Math.floor((offset * 100) / width);
     effectPin.style.left = effectValue + '%';
+
     effectDepth.style.width = effectValue + '%';
     effectVal.value = effectValue;
     applyEffectDepth();
@@ -224,13 +226,10 @@ function applyEffectDepth() {
       effectTypeValue = 'invert(' + effectValue + '%)';
       break;
     case 'phobos':
-      effectTypeValue = 'blur(' + Math.round((effectValue * 3) / 100) + 'px)';
+      effectTypeValue = 'blur(' + (effectValue * 3) / 100 + 'px)';
       break;
     case 'heat':
-      var value = Math.round((effectValue * 3) / 100);
-      if (value < 1) {
-        value = 1;
-      }
+      var value = ((effectValue * 2) / 100) + 1;
       effectTypeValue = 'brightness(' + value + ')';
       break;
   }
