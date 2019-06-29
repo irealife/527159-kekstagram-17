@@ -3,10 +3,9 @@
 // Наложение эффекта
 
 (function () {
-
-  var effectType = window.form.effectType;
-  var effectValue = window.form.effectValue;
   var loadPicture = window.form.loadPicture;
+  var effectType;
+  var effectValue = window.slider.effectValue;
 
   window.applyEffectDepth = function () {
     var effectTypeValue;
@@ -28,6 +27,7 @@
         effectTypeValue = 'brightness(' + value + ')';
         break;
     }
+    console.log(effectValue);
     loadPicture.style.filter = effectTypeValue;
   };
 })();

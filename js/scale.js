@@ -3,9 +3,9 @@
 // Масштабирование фотографий
 
 (function () {
-  var MIN_SIZE = 25;
-  var MAX_SIZE = window.form.MAX_SIZE;
   var STEP = 25;
+  var MIN_SIZE = 25;
+  var MAX_SIZE = 100;
   var uploadPreviewPhoto = document.querySelector('.img-upload__preview');
   var controlSmall = document.querySelector('.scale__control--smaller');
   var controlBig = document.querySelector('.scale__control--bigger');
@@ -23,6 +23,7 @@
   controlBig.addEventListener('click', function () {
     controlScale(1);
   });
+
 
   function controlScale(direction) {
     currentSize = currentSize + STEP * direction;

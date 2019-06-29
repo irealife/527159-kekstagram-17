@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var effectType = window.form.effectType;
-  var effectValue = window.form.effectValue;
+  var effectType = 'none';
+  var effectValue;
+  var loadPicture = window.form.loadPicture;
   var effectPin = window.form.effectPin;
   var effectDepth = window.form.effectDepth;
-  var loadPicture = window.form.loadPicture;
-  var effectLevel = window.form.effectLevel;
+  var effectLevel = document.querySelector('.effect-level');
 
   function effectsWorker(radioButton) {
     if (radioButton.checked) {

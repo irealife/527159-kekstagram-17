@@ -3,6 +3,8 @@
 // добавляет случайные изображения пользователей
 
 (function () {
+  var MAX_COMMENTS = 10;
+  var MAX_NUM_AVATAR = 6;
   var COMMENTS = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -20,11 +22,10 @@
     'Стас',
     'Миша'
   ];
-  var MAX_PHOTO = 25;
   var MIN_LIKES = 15;
   var MAX_LIKES = 200;
-  var MAX_NUM_AVATAR = 6;
-  var MAX_COMMENTS = 10;
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  var MAX_PHOTO = 25;
   var picturesData = [];
 
   function randomInteger(min, max) {
@@ -55,7 +56,6 @@
   }
 
   function generatePicture(imageData) {
-    var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
     var pictureElement = pictureTemplate.cloneNode(true);
     pictureElement.querySelector('.picture__img').src = imageData.url;
     pictureElement.querySelector('.picture__likes').textContent = imageData.likes.toString();

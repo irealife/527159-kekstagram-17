@@ -4,15 +4,24 @@
 
 (function () {
   var INDENT_LEFT = 68;
-  var maxRightPx = parseInt(document.querySelector('.img-upload__wrapper').offsetLeft + INDENT_LEFT, 10);
-  var minLeftPx = parseInt(minLeftPx + document.querySelector('.effect-level__line').offsetWidth, 10);
+  var loadPicture;
+  var effectVal;
+  var effectPin;
+  var effectDepth;
+  var maxRightPx;
+  var minLeftPx;
   var dragging = false;
-  var effectPin = window.form.effectPin;
-  var effectDepth = window.form.effectDepth;
-  var effectVal = document.querySelector('.effect-level__value');
-  var effectValue = window.form.effectValue;
+  var effectValue;
 
   window.fillValues = function () {
+    loadPicture = window.form.loadPicture;
+    effectVal = document.querySelector('.effect-level__value');
+    effectPin = window.form.effectPin;
+    effectDepth = window.form.effectDepth;
+
+    minLeftPx = parseInt(document.querySelector('.img-upload__wrapper').offsetLeft + INDENT_LEFT, 10);
+    maxRightPx = parseInt(minLeftPx + document.querySelector('.effect-level__line').offsetWidth, 10);
+
     window.addEventListener('mouseup', function () {
       dragging = false;
     });
@@ -23,6 +32,10 @@
 
     window.addEffectsActions();
   };
+
+  window.slider = {
+    effectValue: effectValue
+  }
   function handleSlider(mouseX) {
     if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
       var offset = Math.floor(mouseX - minLeftPx);
@@ -34,6 +47,7 @@
       window.applyEffectDepth();
     }
   }
+
   window.addEventListener('mousemove', function (evt) {
     handleSlider(evt.clientX);
   });

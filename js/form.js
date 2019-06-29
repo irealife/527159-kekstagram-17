@@ -4,21 +4,26 @@
 
 (function () {
   var MAX_SIZE = 100;
-
+  var overlayPhoto = document.querySelector('.img-upload__overlay');
+  var effectValue;
   var effectPin = document.querySelector('.effect-level__pin');
   var effectDepth = document.querySelector('.effect-level__depth');
-  var effectValue;
-  var currentSize = 100;
-  var effectType = 'none';
-
-  var uploadPhoto = document.querySelector('#upload-file');
-  var overlayPhoto = document.querySelector('.img-upload__overlay');
-  var onCloseClick = document.querySelector('#upload-cancel');
-  var effectLevel = document.querySelector('.effect-level');
-
-  var inputComments = document.querySelector('.text__description');
   var loadPicture = document.querySelector('.img-upload__preview img');
+  var effectType = 'none';
+  var effectLevel = document.querySelector('.effect-level');
+  var uploadPhoto = document.querySelector('#upload-file');
+  var inputComments = document.querySelector('.text__description');
   var resizeValue = document.querySelector('.scale__control--value');
+  var onCloseClick = document.querySelector('#upload-cancel');
+  var currentSize = 100;
+
+  window.form = {
+    effectPin: effectPin,
+    effectDepth: effectDepth,
+    loadPicture: loadPicture,
+    currentSize: currentSize,
+    resizeValue: resizeValue
+  }
 
   function onEditPhotoEscPress(evt) {
     if (evt.keyCode === 27 && document.activeElement !== inputComments) {
@@ -56,16 +61,4 @@
   onCloseClick.addEventListener('click', function () {
     closeEditPhoto();
   });
-
-  window.form = {
-    MAX_SIZE: MAX_SIZE,
-    effectPin: effectPin,
-    effectDepth: effectDepth,
-    currentSize: currentSize,
-    effectLevel: effectLevel,
-    effectValue: effectValue,
-    effectType: effectType,
-    loadPicture: loadPicture,
-    resizeValue: resizeValue
-  };
 })();
