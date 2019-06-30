@@ -29,12 +29,10 @@
     window.addEffectsActions();
   };
 
-  window.resetSlider = function () {
-    effectValue = 100;
-    effectPin.style.left = '' + effectValue + '%';
-    effectDepth.style.width = '' + effectValue + '%';
-    effectVal.value = effectValue;
-    window.applyEffectDepth(effectValue);
+  window.resetSlider = function (value) {
+    effectPin.style.left = '' + value + '%';
+    effectDepth.style.width = '' + value + '%';
+    effectVal.value = value;
   };
 
   function handleSlider(mouseX) {
@@ -42,9 +40,7 @@
       var offset = Math.floor(mouseX - minLeftPx);
       var width = maxRightPx - minLeftPx;
       effectValue = Math.floor((offset * 100) / width);
-      effectPin.style.left = effectValue + '%';
-      effectDepth.style.width = effectValue + '%';
-      effectVal.value = effectValue;
+      window.resetSlider(effectValue);
       window.applyEffectDepth(effectValue);
     }
   }
