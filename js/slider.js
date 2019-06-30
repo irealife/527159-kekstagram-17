@@ -4,7 +4,7 @@
 
 (function () {
   var INDENT_LEFT = 68;
-  var loadPicture;
+  // var loadPicture;
   var effectVal;
   var effectPin;
   var effectDepth;
@@ -14,7 +14,7 @@
   var effectValue;
 
   window.fillValues = function () {
-    loadPicture = window.form.loadPicture;
+    // loadPicture = window.form.loadPicture;
     effectVal = document.querySelector('.effect-level__value');
     effectPin = window.form.effectPin;
     effectDepth = window.form.effectDepth;
@@ -33,9 +33,6 @@
     window.addEffectsActions();
   };
 
-  window.slider = {
-    effectValue: effectValue
-  }
   function handleSlider(mouseX) {
     if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
       var offset = Math.floor(mouseX - minLeftPx);
@@ -44,7 +41,7 @@
       effectPin.style.left = effectValue + '%';
       effectDepth.style.width = effectValue + '%';
       effectVal.value = effectValue;
-      window.applyEffectDepth();
+      window.applyEffectDepth(effectValue);
     }
   }
 

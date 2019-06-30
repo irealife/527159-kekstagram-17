@@ -22,8 +22,9 @@
     effectDepth: effectDepth,
     loadPicture: loadPicture,
     currentSize: currentSize,
-    resizeValue: resizeValue
-  }
+    resizeValue: resizeValue,
+    effectType: effectType
+  };
 
   function onEditPhotoEscPress(evt) {
     if (evt.keyCode === 27 && document.activeElement !== inputComments) {
@@ -40,8 +41,7 @@
     effectDepth.style.width = '' + effectValue + '%';
     loadPicture.className = '';
     loadPicture.style.filter = '';
-    effectType = 'none';
-    window.applyEffectDepth();
+    window.applyEffectDepth(100);
     effectLevel.classList.add('hidden');
   }
 

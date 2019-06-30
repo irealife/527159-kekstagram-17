@@ -4,30 +4,29 @@
 
 (function () {
   var loadPicture = window.form.loadPicture;
-  var effectType;
-  var effectValue = window.slider.effectValue;
+  // var effectType;
+  // var effectValue;
 
-  window.applyEffectDepth = function () {
+  window.applyEffectDepth = function (value) {
     var effectTypeValue;
-    switch (effectType) {
+    switch (window.form.effectType) {
       case 'chrome':
-        effectTypeValue = 'grayscale(' + (effectValue / 100) + ')';
+        effectTypeValue = 'grayscale(' + (value / 100) + ')';
         break;
       case 'sepia':
-        effectTypeValue = 'sepia(' + (effectValue / 100) + ')';
+        effectTypeValue = 'sepia(' + (value / 100) + ')';
         break;
       case 'marvin':
-        effectTypeValue = 'invert(' + effectValue + '%)';
+        effectTypeValue = 'invert(' + value + '%)';
         break;
       case 'phobos':
-        effectTypeValue = 'blur(' + (effectValue * 3) / 100 + 'px)';
+        effectTypeValue = 'blur(' + (value * 3) / 100 + 'px)';
         break;
       case 'heat':
-        var value = ((effectValue * 2) / 100) + 1;
-        effectTypeValue = 'brightness(' + value + ')';
+        effectTypeValue = 'brightness(' + (((value * 2) / 100) + 1) + ')';
         break;
     }
-    console.log(effectValue);
+    // console.log(effectValue);
     loadPicture.style.filter = effectTypeValue;
   };
 })();

@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var effectType = 'none';
   var effectValue;
   var loadPicture = window.form.loadPicture;
   var effectPin = window.form.effectPin;
@@ -10,7 +9,7 @@
 
   function effectsWorker(radioButton) {
     if (radioButton.checked) {
-      effectType = radioButton.value;
+      window.form.effectType = radioButton.value;
       effectValue = 100;
       effectPin.style.left = '' + effectValue + '%';
       effectDepth.style.width = '' + effectValue + '%';
