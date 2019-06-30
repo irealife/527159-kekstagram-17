@@ -14,7 +14,7 @@
     if (radioButton.checked) {
       window.filter.effectType = radioButton.value;
       effectValue = 100;
-      window.resetSlider(effectValue);
+      window.getEffectValue(effectValue);
       loadPicture.className = '';
       loadPicture.style.filter = '';
       loadPicture.classList.add('effects__preview--' + radioButton.value);

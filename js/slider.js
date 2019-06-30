@@ -29,7 +29,7 @@
     window.addEffectsActions();
   };
 
-  window.resetSlider = function (value) {
+  window.getEffectValue = function (value) {
     effectPin.style.left = '' + value + '%';
     effectDepth.style.width = '' + value + '%';
     effectVal.value = value;
@@ -40,7 +40,7 @@
       var offset = Math.floor(mouseX - minLeftPx);
       var width = maxRightPx - minLeftPx;
       effectValue = Math.floor((offset * 100) / width);
-      window.resetSlider(effectValue);
+      window.getEffectValue(effectValue);
       window.applyEffectDepth(effectValue);
     }
   }
