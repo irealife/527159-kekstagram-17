@@ -2,14 +2,19 @@
 
 (function () {
   var effectValue;
-  var loadPicture = window.form.loadPicture;
-  var effectPin = window.form.effectPin;
-  var effectDepth = window.form.effectDepth;
+  var loadPicture = document.querySelector('.img-upload__preview img');
+  var effectPin = document.querySelector('.effect-level__pin');
+  var effectDepth = document.querySelector('.effect-level__depth');
   var effectLevel = document.querySelector('.effect-level');
+  var effectType = 'none';
+
+  window.filter = {
+    effectType: effectType
+  };
 
   function effectsWorker(radioButton) {
     if (radioButton.checked) {
-      window.form.effectType = radioButton.value;
+      window.filter.effectType = radioButton.value;
       effectValue = 100;
       effectPin.style.left = '' + effectValue + '%';
       effectDepth.style.width = '' + effectValue + '%';

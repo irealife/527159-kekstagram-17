@@ -4,20 +4,16 @@
 
 (function () {
   var INDENT_LEFT = 68;
-  // var loadPicture;
   var effectVal;
-  var effectPin;
-  var effectDepth;
+  var effectPin = document.querySelector('.effect-level__pin');
+  var effectDepth = document.querySelector('.effect-level__depth');
   var maxRightPx;
   var minLeftPx;
   var dragging = false;
   var effectValue;
 
   window.fillValues = function () {
-    // loadPicture = window.form.loadPicture;
     effectVal = document.querySelector('.effect-level__value');
-    effectPin = window.form.effectPin;
-    effectDepth = window.form.effectDepth;
 
     minLeftPx = parseInt(document.querySelector('.img-upload__wrapper').offsetLeft + INDENT_LEFT, 10);
     maxRightPx = parseInt(minLeftPx + document.querySelector('.effect-level__line').offsetWidth, 10);

@@ -3,13 +3,11 @@
 // Наложение эффекта
 
 (function () {
-  var loadPicture = window.form.loadPicture;
-  // var effectType;
-  // var effectValue;
+  var loadPicture = document.querySelector('.img-upload__preview img');
 
   window.applyEffectDepth = function (value) {
     var effectTypeValue;
-    switch (window.form.effectType) {
+    switch (window.filter.effectType) {
       case 'chrome':
         effectTypeValue = 'grayscale(' + (value / 100) + ')';
         break;
@@ -26,7 +24,6 @@
         effectTypeValue = 'brightness(' + (((value * 2) / 100) + 1) + ')';
         break;
     }
-    // console.log(effectValue);
     loadPicture.style.filter = effectTypeValue;
   };
 })();
