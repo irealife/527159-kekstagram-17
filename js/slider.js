@@ -29,6 +29,14 @@
     window.addEffectsActions();
   };
 
+  window.resetSlider = function () {
+    effectValue = 100;
+    effectPin.style.left = '' + effectValue + '%';
+    effectDepth.style.width = '' + effectValue + '%';
+    effectVal.value = effectValue;
+    window.applyEffectDepth(effectValue);
+  };
+
   function handleSlider(mouseX) {
     if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
       var offset = Math.floor(mouseX - minLeftPx);
