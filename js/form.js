@@ -4,8 +4,6 @@
 
 (function () {
   var overlayPhoto = document.querySelector('.img-upload__overlay');
-  var loadPicture = document.querySelector('.img-upload__preview img');
-
   var effectLevel = document.querySelector('.effect-level');
   var uploadPhoto = document.querySelector('#upload-file');
   var inputComments = document.querySelector('.text__description');
@@ -21,10 +19,9 @@
     overlayPhoto.classList.remove('hidden');
     document.addEventListener('keydown', onEditPhotoEscPress);
     window.fillValues();
-    loadPicture.className = '';
-    loadPicture.style.filter = '';
     window.applyEffectDepth(100);
     effectLevel.classList.add('hidden');
+    window.resetLoadPicture();
   }
 
   function closeEditPhoto() {

@@ -10,13 +10,17 @@
     effectType: effectType
   };
 
+  window.resetLoadPicture = function () {
+    loadPicture.className = '';
+    loadPicture.style.filter = '';
+  };
+
   function effectsWorker(radioButton) {
     if (radioButton.checked) {
       window.filter.effectType = radioButton.value;
       effectValue = 100;
       window.setEffectValue(effectValue);
-      loadPicture.className = '';
-      loadPicture.style.filter = '';
+      window.resetLoadPicture();
       loadPicture.classList.add('effects__preview--' + radioButton.value);
       effectLevel.classList.toggle('hidden', radioButton.value === 'none');
     }
