@@ -24,7 +24,6 @@
     controlScale(1);
   });
 
-
   function controlScale(direction) {
     currentSize = currentSize + STEP * direction;
     if (currentSize < MIN_SIZE) {

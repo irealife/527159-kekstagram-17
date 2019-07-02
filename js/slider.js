@@ -4,16 +4,14 @@
 
 (function () {
   var INDENT_LEFT = 68;
-  var effectVal;
-  var effectPin = document.querySelector('.effect-level__pin');
-  var effectDepth = document.querySelector('.effect-level__depth');
+  var effectPinElement = document.querySelector('.effect-level__pin');
+  var effectDepthElement = document.querySelector('.effect-level__depth');
+  var effectValueElement = document.querySelector('.effect-level__value');
   var maxRightPx;
   var minLeftPx;
   var dragging = false;
-  var effectValue;
 
   window.fillValues = function () {
-    effectVal = document.querySelector('.effect-level__value');
 
     minLeftPx = parseInt(document.querySelector('.img-upload__wrapper').offsetLeft + INDENT_LEFT, 10);
     maxRightPx = parseInt(minLeftPx + document.querySelector('.effect-level__line').offsetWidth, 10);
@@ -22,25 +20,25 @@
       dragging = false;
     });
 
-    effectPin.addEventListener('mousedown', function () {
+    effectPinElement.addEventListener('mousedown', function () {
       dragging = true;
     });
 
     window.addEffectsActions();
   };
 
-  window.getEffectValue = function (value) {
-    effectPin.style.left = '' + value + '%';
-    effectDepth.style.width = '' + value + '%';
-    effectVal.value = value;
+  window.setEffectValue = function (value) {
+    effectPinElement.style.left = '' + value + '%';
+    effectDepthElement.style.width = '' + value + '%';
+    effectValueElement.value = value;
   };
 
   function handleSlider(mouseX) {
     if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
       var offset = Math.floor(mouseX - minLeftPx);
       var width = maxRightPx - minLeftPx;
-      effectValue = Math.floor((offset * 100) / width);
-      window.getEffectValue(effectValue);
+      var effectValue = Math.floor((offset * 100) / width);
+      window.setEffectValue(effectValue);
       window.applyEffectDepth(effectValue);
     }
   }
