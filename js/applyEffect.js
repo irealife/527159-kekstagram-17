@@ -3,29 +3,25 @@
 // Наложение эффекта
 
 (function () {
+  var loadPicture = document.querySelector('.img-upload__preview img');
 
-  var effectType = window.form.effectType;
-  var effectValue = window.form.effectValue;
-  var loadPicture = window.form.loadPicture;
-
-  window.applyEffectDepth = function () {
+  window.applyEffectDepth = function (value) {
     var effectTypeValue;
-    switch (effectType) {
+    switch (window.filter.effectType) {
       case 'chrome':
-        effectTypeValue = 'grayscale(' + (effectValue / 100) + ')';
+        effectTypeValue = 'grayscale(' + (value / 100) + ')';
         break;
       case 'sepia':
-        effectTypeValue = 'sepia(' + (effectValue / 100) + ')';
+        effectTypeValue = 'sepia(' + (value / 100) + ')';
         break;
       case 'marvin':
-        effectTypeValue = 'invert(' + effectValue + '%)';
+        effectTypeValue = 'invert(' + value + '%)';
         break;
       case 'phobos':
-        effectTypeValue = 'blur(' + (effectValue * 3) / 100 + 'px)';
+        effectTypeValue = 'blur(' + (value * 3) / 100 + 'px)';
         break;
       case 'heat':
-        var value = ((effectValue * 2) / 100) + 1;
-        effectTypeValue = 'brightness(' + value + ')';
+        effectTypeValue = 'brightness(' + (((value * 2) / 100) + 1) + ')';
         break;
     }
     loadPicture.style.filter = effectTypeValue;

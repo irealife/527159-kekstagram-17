@@ -3,17 +3,17 @@
 // Масштабирование фотографий
 
 (function () {
-  var MIN_SIZE = 25;
-  var MAX_SIZE = window.form.MAX_SIZE;
   var STEP = 25;
+  var MIN_SIZE = 25;
+  var MAX_SIZE = 100;
+  var currentSize = 100;
   var uploadPreviewPhoto = document.querySelector('.img-upload__preview');
   var controlSmall = document.querySelector('.scale__control--smaller');
   var controlBig = document.querySelector('.scale__control--bigger');
-  var currentSize = window.form.currentSize;
-  var resizeValue = window.form.resizeValue;
+  var resizeValue = document.querySelector('.scale__control--value');
 
-  function changeScale() {
-    uploadPreviewPhoto.style.transform = 'scale(' + currentSize / 100 + ')';
+  function changeScale(size) {
+    uploadPreviewPhoto.style.transform = 'scale(' + size / 100 + ')';
   }
 
   controlSmall.addEventListener('click', function () {

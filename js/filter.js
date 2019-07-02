@@ -1,21 +1,26 @@
 'use strict';
 
 (function () {
-  var effectType = window.form.effectType;
-  var effectValue = window.form.effectValue;
-  var effectPin = window.form.effectPin;
-  var effectDepth = window.form.effectDepth;
-  var loadPicture = window.form.loadPicture;
-  var effectLevel = window.form.effectLevel;
+  var loadPicture = document.querySelector('.img-upload__preview img');
+  var effectLevel = document.querySelector('.effect-level');
+  var effectType = 'none';
+  var effectValue;
+
+  window.filter = {
+    effectType: effectType
+  };
+
+  window.resetLoadPicture = function () {
+    loadPicture.className = '';
+    loadPicture.style.filter = '';
+  };
 
   function effectsWorker(radioButton) {
     if (radioButton.checked) {
-      effectType = radioButton.value;
+      window.filter.effectType = radioButton.value;
       effectValue = 100;
-      effectPin.style.left = '' + effectValue + '%';
-      effectDepth.style.width = '' + effectValue + '%';
-      loadPicture.className = '';
-      loadPicture.style.filter = '';
+      window.setEffectValue(effectValue);
+      window.resetLoadPicture();
       loadPicture.classList.add('effects__preview--' + radioButton.value);
       effectLevel.classList.toggle('hidden', radioButton.value === 'none');
     }
