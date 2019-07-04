@@ -4,6 +4,10 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   var timeout = 10000;
 
+  window.backend = {
+    picturesData: []
+  };
+
   window.getDataFromServer = function (url, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
 
@@ -39,6 +43,7 @@
     if (data.length <= 0) {
       onError('Сервер прислал пустые данные');
     }
+    window.backend.picturesData = data;
     window.renderPictures(data);
   };
 
