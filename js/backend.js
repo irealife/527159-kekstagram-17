@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var URL = 'https://js.dump.academy/kekstagram/data';
   var timeout = 10000;
 
   window.getDataFromServer = function (url, onSuccess, onError) {
@@ -29,4 +30,17 @@
     xhr.open('GET', url);
     xhr.send();
   };
+
+  var onError = function (message) {
+    window.console.error(message);
+  };
+
+  var onSuccess = function (data) {
+    if (data.length <= 0) {
+      onError('Сервер прислал пустые данные');
+    }
+    window.renderPictures(data);
+  };
+
+  window.getDataFromServer(URL, onSuccess, onError);
 })();

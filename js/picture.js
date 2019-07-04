@@ -1,19 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
-  var picturesData;
-
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-
-  var onError = function (message) {
-    window.console.error(message);
-  };
-
-  var onSuccess = function (data) {
-    picturesData = data;
-    renderPictures();
-  };
 
   function generatePicture(imageData) {
     var pictureElement = pictureTemplate.cloneNode(true);
@@ -23,15 +11,12 @@
     return pictureElement;
   }
 
-  function renderPictures() {
-
+  window.renderPictures = function (picturesData) {
     var fragment = document.createDocumentFragment();
     var pictures = document.querySelector('.pictures');
     picturesData.forEach(function (image) {
       fragment.appendChild(generatePicture(image));
     });
     pictures.appendChild(fragment);
-  }
-
-  window.getDataFromServer(URL, onSuccess, onError);
+  };
 })();
