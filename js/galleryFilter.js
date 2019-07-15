@@ -14,12 +14,12 @@
     imgFilters.classList.remove('img-filters--inactive');
 
     filterButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
+      button.addEventListener('click', window.debounce(function () {
         activeButton.classList.remove('img-filters__button--active');
         activeButton = button;
         activeButton.classList.add('img-filters__button--active');
         filterPictures(button.attributes.id.value);
-      });
+      }));
     });
   };
 
