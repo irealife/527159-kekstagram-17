@@ -1,65 +1,60 @@
 'use strict';
 
 (function () {
-  var hastagsArray = [];
-  var hastagsString;
+  var hashTagsArray = [];
+  var validHashTagsArray = [];
+  var hashTagsString;
 
   window.hashTagsInit = function () {
-    hastagsString = document.querySelector('.text__hashtags');
-    hastagsString.addEventListener('change', function () {
+    hashTagsString = document.querySelector('.text__hashtags');
+    hashTagsString.addEventListener('change', function () {
       hashTagsCheck();
     });
   };
 
   function hashTagsCheck() {
-    hastagsArray = hastagsString.value.toLowerCase().split(' ');
-    hastagsArray.forEach(function (hashTag) {
-      hashTagItemCheck(hashTag);
-    });
+    validHashTagsArray = [];
+    hashTagsArray = hashTagsString.value.toLowerCase().split(' ');
+    for (var i = 0; i < hashTagsArray.length; i++) {
+      if (!hashTagItemCheck(hashTagsArray[i])) {
+        break;
+      } else {
+        validHashTagsArray.push(hashTagsArray[i]);
+      }
+    }
   }
 
   function hashTagItemCheck(tag) {
-    hastagsString.classList.toggle('field-error', false);
-    hastagsString.setCustomValidity('');
-    if (tag[0] !== '#') {
-      hastagsString.setCustomValidity('хештег должен начинаться с символа #');
-      hastagsString.classList.toggle('field-error', true);
-    }
+    var validity = true;
+    hashTagsString.classList.toggle('field-error', false);
+    hashTagsString.setCustomValidity('');
 
     if (tag.length < 1) {
-      return;
+      return validity;
     }
 
-    if (tag.length === 1 && tag[0] === '#') {
-      hastagsString.setCustomValidity('хештег не должен состоять только из символа #');
-      hastagsString.classList.toggle('field-error', true);
+    if (tag[0] !== '#') {
+      hashTagsString.setCustomValidity('хештег должен начинаться с символа #');
+      hashTagsString.classList.toggle('field-error', true);
+      validity = false;
+    } else if (tag.length === 1 && tag[0] === '#') {
+      hashTagsString.setCustomValidity('хештег не должен состоять только из символа #');
+      hashTagsString.classList.toggle('field-error', true);
+      validity = false;
+    } else if (hashTagsArray.length > 5) {
+      hashTagsString.setCustomValidity('не должно быть более 5 хэштегов');
+      hashTagsString.classList.toggle('field-error', true);
+      validity = false;
+    } else if (tag.length > 20) {
+      hashTagsString.setCustomValidity('длина хештега не должна быть более 20 символов');
+      hashTagsString.classList.toggle('field-error', true);
+      validity = false;
+    } else if (validHashTagsArray.includes(tag)) {
+      hashTagsString.setCustomValidity('хештеги не должны повторяться');
+      hashTagsString.classList.toggle('field-error', true);
+      validity = false;
     }
 
-    var tmpTag = tag + ' ';
-    if (hastagsString.value !== tmpTag && hastagsString.value.search(tmpTag) !== -1) {
-      hastagsArray = makeUniqueTagsArray(hastagsArray);
-      hastagsString.value = hastagsArray.join(' ');
-    }
-
-    if (hastagsArray.length > 5) {
-      hastagsString.setCustomValidity('не должно быть более 5 хэштегов');
-      hastagsString.classList.toggle('field-error', true);
-    }
-
-    if (tag.length > 20) {
-      hastagsString.setCustomValidity('длина хештега не должна быть более 20 символов');
-      hastagsString.classList.toggle('field-error', true);
-    }
-  }
-
-  function makeUniqueTagsArray(array) {
-    var obj = {};
-
-    for (var i = 0; i < array.length; i++) {
-      var str = array[i];
-      obj[str] = true;
-    }
-
-    return Object.keys(obj);
+    return validity;
   }
 })();

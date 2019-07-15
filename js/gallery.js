@@ -3,6 +3,7 @@
 (function () {
   var URL = 'https://js.dump.academy/kekstagram/data';
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  var pictures = document.querySelector('.pictures');
 
   window.gallery = {
     picturesData: []
@@ -17,21 +18,10 @@
   }
 
   window.renderPictures = function (picturesData) {
-    if (picturesData === null || picturesData === undefined) {
-      return;
-    }
-    if (picturesData.length <= 0) {
-      return;
-    }
-    var pictures = document.querySelector('.pictures');
-    var imgUpload = document.querySelector('.img-upload');
-    var picturesTitle = document.querySelector('.pictures__title');
-
-    while (pictures.firstChild) {
-      pictures.removeChild(pictures.firstChild);
-    }
-    pictures.append(picturesTitle);
-    pictures.append(imgUpload);
+    var allPictures = pictures.querySelectorAll('.picture');
+    allPictures.forEach(function (picture) {
+      pictures.removeChild(picture);
+    });
 
     var fragment = document.createDocumentFragment();
     picturesData.forEach(function (image) {
@@ -48,12 +38,13 @@
   };
 
   var onSuccess = function (data) {
-    if (data.length <= 0) {
+    if (!data || !data.length) {
       onError('Сервер прислал пустые данные');
+    } else {
+      window.gallery.picturesData = data;
+      window.renderPictures(data);
+      window.initPicturesFilter();
     }
-    window.gallery.picturesData = data;
-    window.renderPictures(data);
-    window.initPicturesFilter();
   };
 
   window.getDataFromServer(URL, onSuccess, onError);

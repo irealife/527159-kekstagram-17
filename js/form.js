@@ -7,12 +7,12 @@
   var overlayPhoto = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level');
   var uploadPhoto = document.querySelector('#upload-file');
-  var hastags = document.querySelector('.text__hashtags');
   var inputComments = document.querySelector('.text__description');
   var onCloseClick = document.querySelector('#upload-cancel');
   var submitButton = document.querySelector('#upload-submit');
   var loadPicture = document.querySelector('.img-upload__preview img');
   var effectType = 'none';
+  var form = document.querySelector('#upload-select-image');
   /* элементы для сообщения "Загружаем" */
   var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
   var fragment = document.createDocumentFragment();
@@ -24,11 +24,7 @@
     }
   }
 
-  function sendFormData(evt) {
-    if (evt) {
-      evt.preventDefault();
-    }
-    var form = document.querySelector('#upload-select-image');
+  function sendFormData() {
     var formData = new FormData(form);
     /* вывод сообщения "Загружаем" */
     fragment.appendChild(uploadMessage);
@@ -44,7 +40,11 @@
     window.applyEffectDepth(100);
     effectLevel.classList.add('hidden');
     window.resetLoadPicture();
-    submitButton.addEventListener('click', sendFormData);
+    submitButton.addEventListener('click', function () {
+      if (form.checkValidity()) {
+        sendFormData();
+      }
+    });
   }
 
   var uploadError = function (message) {
@@ -56,7 +56,7 @@
   };
 
   var uploadSuccess = function (data) {
-    if (data.length <= 0) {
+    if (!data || !data.length) {
       uploadError('Сервер прислал пустые данные');
     }
     /* скрытие сообщения "Загружаем" */
@@ -66,13 +66,10 @@
   };
 
   function closeEditPhoto() {
+    form.reset();
     overlayPhoto.classList.add('hidden');
     document.removeEventListener('keydown', onEditPhotoEscPress);
     submitButton.removeEventListener('click', sendFormData);
-    uploadPhoto.value = '';
-    hastags.value = '';
-    inputComments.value = '';
-    document.querySelector('.effects__radio').checked = true;
   }
 
   uploadPhoto.addEventListener('change', function () {
@@ -105,14 +102,13 @@
     loadPicture.style.filter = effectTypeValue;
   };
 
-  window.addEffectsActions = function () {
-    document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
-      radioButton.addEventListener('change', function () {
-        effectType = radioButton.value;
-        window.effectsWorker(radioButton);
-      });
+  document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
+    radioButton.addEventListener('change', function () {
+      effectType = radioButton.value;
+      window.effectsWorker(radioButton);
     });
-  };
+  });
+
 
   window.hashTagsInit();
 })();
