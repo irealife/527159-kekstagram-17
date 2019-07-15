@@ -18,7 +18,7 @@
         activeButton.classList.remove('img-filters__button--active');
         activeButton = button;
         activeButton.classList.add('img-filters__button--active');
-        filterPictures(button.attributes.id.value);
+        filterPictures(button.id);
       }));
     });
   };
