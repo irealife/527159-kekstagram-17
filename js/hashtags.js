@@ -3,10 +3,10 @@
 (function () {
   var hashTagsArray = [];
   var validHashTagsArray = [];
-  var hashTagsString;
+  var hashTagsString = document.querySelector('.text__hashtags');
+  var validity = false;
 
   window.hashTagsInit = function () {
-    hashTagsString = document.querySelector('.text__hashtags');
     hashTagsString.addEventListener('change', function () {
       hashTagsCheck();
     });
@@ -16,6 +16,9 @@
     validHashTagsArray = [];
     hashTagsArray = hashTagsString.value.toLowerCase().split(' ');
     for (var i = 0; i < hashTagsArray.length; i++) {
+      if (!validity) {
+        hashTagsString.classList.add('field-error');
+      }
       if (!hashTagItemCheck(hashTagsArray[i])) {
         break;
       } else {
@@ -25,12 +28,11 @@
   }
 
   function hashTagItemCheck(tag) {
-    var validity = false;
-    hashTagsString.classList.remove('field-error');
+
+    // hashTagsString.classList.remove('field-error');
     hashTagsString.setCustomValidity('');
 
-    if (tag.length < 1 && validity) {
-      hashTagsString.classList.add('field-error');
+    if (tag.length < 1) {
       return !validity;
     }
 
