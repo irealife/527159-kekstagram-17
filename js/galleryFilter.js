@@ -15,6 +15,9 @@
 
     filterButtons.forEach(function (button) {
       button.addEventListener('click', window.debounce(function () {
+        if (activeButton === button) {
+          return;
+        }
         activeButton.classList.remove('img-filters__button--active');
         activeButton = button;
         activeButton.classList.add('img-filters__button--active');
