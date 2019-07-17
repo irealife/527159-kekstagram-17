@@ -109,6 +109,5 @@
     });
   });
 
-
   window.hashTagsInit();
 })();
