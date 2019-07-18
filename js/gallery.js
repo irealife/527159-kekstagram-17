@@ -14,6 +14,9 @@
     pictureElement.querySelector('.picture__img').src = imageData.url;
     pictureElement.querySelector('.picture__likes').textContent = imageData.likes.toString();
     pictureElement.querySelector('.picture__comments').textContent = imageData.comments.length.toString();
+    pictureElement.addEventListener('click', function () {
+      window.showBigPicture(imageData);
+    });
     return pictureElement;
   }
 
@@ -48,4 +51,5 @@
   };
 
   window.getDataFromServer(URL, onSuccess, onError);
+
 })();
