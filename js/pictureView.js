@@ -39,7 +39,9 @@
     var end = start + tmpComments.length;
     for (var i = start; i < end; i++) {
       var commentTemplateClone = commentTemplate.cloneNode(true);
-      commentTemplateClone.querySelector('.social__picture').src = comments[i].avatar;
+      var commentAvatar = commentTemplateClone.querySelector('.social__picture');
+      commentAvatar.src = comments[i].avatar;
+      commentAvatar.alt = comments[i].name;
       commentTemplateClone.querySelector('.social__text').innerHTML = comments[i].message;
       bigPictureCommentsList.appendChild(commentTemplateClone);
     }
