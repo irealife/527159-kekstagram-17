@@ -37,11 +37,7 @@
   };
 
   function togglePicturePopup(popup) {
-    if (popup) {
-      body.classList.add('modal-open');
-    } else if (!popup) {
-      body.classList.remove('modal-open');
-    }
+    body.classList.toggle('modal-open', popup);
   }
 
   function renderComments(start, count, comments) {
