@@ -16,23 +16,33 @@
   var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
   var bigPictureCommentsLoader = bigPicture.querySelector('.social__comments-loader');
   var bigPictureCancelButton = bigPicture.querySelector('.big-picture__cancel');
+  var openPopup;
 
   window.showBigPicture = function (imageData) {
     document.addEventListener('keydown', onBigPictureEscPress);
     bigPictureImg.src = imageData.url;
     bigPictureAuthorAvatar.src = 'img/avatar-' + Math.round(0.5 + Math.random() * 6) + '.svg';
-    bigPictureAuthorCaption.innerHTML = imageData.description;
-    bigPictureAuthorLikes.innerHTML = imageData.likes;
-    bigPictureCommentsCountPortion.innerHTML = BIGPICTURECOMMENTSPORTION.toString();
-    bigPictureCommentsCountTotal.innerHTML = imageData.comments.length.toString();
-    bigPictureCommentsList.innerHTML = '';
+    bigPictureAuthorCaption.textContent = imageData.description;
+    bigPictureAuthorLikes.textContent = imageData.likes;
+    bigPictureCommentsCountPortion.textContent = BIGPICTURECOMMENTSPORTION.toString();
+    bigPictureCommentsCountTotal.textContent = imageData.comments.length.toString();
+    bigPictureCommentsList.textContent = '';
     bigPictureCommentsStart = 0;
     renderComments(bigPictureCommentsStart, BIGPICTURECOMMENTSPORTION, imageData.comments);
     bigPictureCommentsCount.classList.add('visually-hidden');
     bigPictureCommentsLoader.classList.add('visually-hidden');
     bigPicture.classList.remove('hidden');
-    body.classList.add('modal-open');
+    togglePicturePopup(openPopup);
+    // body.classList.add('modal-open');
   };
+
+  function togglePicturePopup(popup) {
+    if (popup) {
+      body.classList.add('modal-open');
+    } else if (!popup) {
+      body.classList.remove('modal-open');
+    }
+  }
 
   function renderComments(start, count, comments) {
     var tmpComments = comments.slice(start, (start + count));
@@ -50,7 +60,8 @@
   function closeBigPicture() {
     document.removeEventListener('keydown', onBigPictureEscPress);
     bigPicture.classList.add('hidden');
-    body.classList.remove('modal-open');
+    togglePicturePopup(openPopup);
+    // body.classList.remove('modal-open');
   }
 
   function onBigPictureEscPress(evt) {
