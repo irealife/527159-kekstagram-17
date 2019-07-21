@@ -21,18 +21,22 @@
     document.addEventListener('keydown', onBigPictureEscPress);
     bigPictureImg.src = imageData.url;
     bigPictureAuthorAvatar.src = 'img/avatar-' + Math.round(0.5 + Math.random() * 6) + '.svg';
-    bigPictureAuthorCaption.innerHTML = imageData.description;
-    bigPictureAuthorLikes.innerHTML = imageData.likes;
-    bigPictureCommentsCountPortion.innerHTML = BIGPICTURECOMMENTSPORTION.toString();
-    bigPictureCommentsCountTotal.innerHTML = imageData.comments.length.toString();
-    bigPictureCommentsList.innerHTML = '';
+    bigPictureAuthorCaption.textContent = imageData.description;
+    bigPictureAuthorLikes.textContent = imageData.likes;
+    bigPictureCommentsCountPortion.textContent = BIGPICTURECOMMENTSPORTION.toString();
+    bigPictureCommentsCountTotal.textContent = imageData.comments.length.toString();
+    bigPictureCommentsList.textContent = '';
     bigPictureCommentsStart = 0;
     renderComments(bigPictureCommentsStart, BIGPICTURECOMMENTSPORTION, imageData.comments);
     bigPictureCommentsCount.classList.add('visually-hidden');
     bigPictureCommentsLoader.classList.add('visually-hidden');
-    bigPicture.classList.remove('hidden');
-    body.classList.add('modal-open');
+    togglePicturePopup(true);
   };
+
+  function togglePicturePopup(isShow) {
+    body.classList.toggle('modal-open', isShow);
+    bigPicture.classList.toggle('hidden', !isShow);
+  }
 
   function renderComments(start, count, comments) {
     var tmpComments = comments.slice(start, (start + count));
@@ -49,8 +53,7 @@
 
   function closeBigPicture() {
     document.removeEventListener('keydown', onBigPictureEscPress);
-    bigPicture.classList.add('hidden');
-    body.classList.remove('modal-open');
+    togglePicturePopup(false);
   }
 
   function onBigPictureEscPress(evt) {
