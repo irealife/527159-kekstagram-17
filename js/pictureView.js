@@ -33,9 +33,9 @@
     togglePicturePopup(true);
   };
 
-  function togglePicturePopup(show) {
-    body.classList.toggle('modal-open', show);
-    bigPicture.classList.toggle('hidden', !show);
+  function togglePicturePopup(isShow) {
+    body.classList.toggle('modal-open', isShow);
+    bigPicture.classList.toggle('hidden', !isShow);
   }
 
   function renderComments(start, count, comments) {
