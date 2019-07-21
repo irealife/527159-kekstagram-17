@@ -13,6 +13,7 @@
   var loadPicture = document.querySelector('.img-upload__preview img');
   var effectType = 'none';
   var form = document.querySelector('#upload-select-image');
+  var uploadMessageSuccess = document.querySelector('#success').content.querySelector('.success__title').cloneNode(true);
   /* элементы для сообщения "Загружаем" */
   var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
   var fragment = document.createDocumentFragment();
