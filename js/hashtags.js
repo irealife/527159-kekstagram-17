@@ -1,5 +1,7 @@
 'use strict';
 
+// Валидация
+
 (function () {
   var hashTagsArray = [];
   var validHashTagsArray = [];
