@@ -13,7 +13,6 @@
   var loadPicture = document.querySelector('.img-upload__preview img');
   var effectType = 'none';
   var form = document.querySelector('#upload-select-image');
-  var uploadMessageSuccess = document.querySelector('#success').content.querySelector('.success__title').cloneNode(true);
   /* элементы для сообщения "Загружаем" */
   var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
   var fragment = document.createDocumentFragment();
@@ -34,6 +33,13 @@
     window.sendDataToServer(uploadURL, formData, uploadSuccess, uploadError);
   }
 
+  submitButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    if (form.checkValidity()) {
+      sendFormData();
+    }
+  });
+
   function openEditPhoto() {
     overlayPhoto.classList.remove('hidden');
     document.addEventListener('keydown', onEditPhotoEscPress);
@@ -41,17 +47,14 @@
     window.applyEffectDepth(100);
     effectLevel.classList.add('hidden');
     window.resetLoadPicture();
-    submitButton.addEventListener('click', function () {
-      if (form.checkValidity()) {
-        sendFormData();
-      }
-    });
   }
 
   var uploadError = function (message) {
     window.console.error(message);
     /* скрытие сообщения "Загружаем" */
-    elementMain.removeChild(uploadMessage);
+    if (elementMain.contains(uploadMessage)) {
+      elementMain.removeChild(uploadMessage);
+    }
 
     window.showMessage('error', message, [sendFormData, closeEditPhoto]);
   };
@@ -61,7 +64,9 @@
       uploadError('Сервер прислал пустые данные');
     }
     /* скрытие сообщения "Загружаем" */
-    elementMain.removeChild(uploadMessage);
+    if (elementMain.contains(uploadMessage)) {
+      elementMain.removeChild(uploadMessage);
+    }
 
     window.showMessage('success', 'Данные отправлены', [closeEditPhoto]);
   };
@@ -70,7 +75,6 @@
     form.reset();
     overlayPhoto.classList.add('hidden');
     document.removeEventListener('keydown', onEditPhotoEscPress);
-    submitButton.removeEventListener('click', sendFormData);
   }
 
   uploadPhoto.addEventListener('change', function () {

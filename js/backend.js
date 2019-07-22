@@ -4,8 +4,11 @@
   var timeout = 10000;
   var elementMain = document.querySelector('main');
 
-  function removeMessage(parent, element, callback) {
-    parent.removeChild(element);
+  function removeMessage(element, callback) {
+    if (!elementMain.contains(element)) {
+      return;
+    }
+    elementMain.removeChild(element);
     if (callback !== null && callback !== undefined) {
       callback();
     }
@@ -16,14 +19,16 @@
     var fragment = document.createDocumentFragment();
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === 27) {
-        removeMessage(elementMain, element, callbacks[0].name);
+        removeMessage(element, callbacks[0]);
+        document.click();
       }
-    });
-    window.addEventListener('click', function (evt) {
+    }, {once: true});
+    document.addEventListener('click', function (evt) {
       if (element === evt.target) {
-        removeMessage(elementMain, element, callbacks[0].name);
+        removeMessage(element, callbacks[0]);
+        document.onkeydown();
       }
-    });
+    }, {once: true});
 
     var buttons = element.querySelectorAll('.' + type + '__button');
     buttons.forEach(function (buttonItem, index) {
@@ -33,8 +38,8 @@
         }
       }
       buttonItem.addEventListener('click', function () {
-        removeMessage(elementMain, element, callbacks[index]);
-      });
+        removeMessage(element, callbacks[index]);
+      }, {once: true});
     });
 
     if (message.length > 0) {
