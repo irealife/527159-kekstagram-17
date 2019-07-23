@@ -11,37 +11,42 @@
   var minLeftPx;
   var dragging = false;
 
-  window.addEventListener('mouseup', function () {
-    dragging = false;
-  });
-
-  effectPinElement.addEventListener('mousedown', function () {
-    dragging = true;
-  });
-
-  window.fillValues = function () {
+  function fillValues() {
     minLeftPx = parseInt(document.querySelector('.img-upload__wrapper').offsetLeft + INDENT_LEFT, 10);
     maxRightPx = parseInt(minLeftPx + document.querySelector('.effect-level__line').offsetWidth, 10);
-  };
+  }
 
-  window.setEffectValue = function (value) {
+  function setEffectValue(value) {
     effectPinElement.style.left = '' + value + '%';
     effectDepthElement.style.width = '' + value + '%';
     effectValueElement.value = value;
-  };
+  }
 
   function handleSlider(mouseX) {
     if (dragging && mouseX >= minLeftPx && mouseX <= maxRightPx) {
       var offset = Math.floor(mouseX - minLeftPx);
       var width = maxRightPx - minLeftPx;
       var effectValue = Math.floor((offset * 100) / width);
-      window.setEffectValue(effectValue);
-      window.applyEffectDepth(effectValue);
+      setEffectValue(effectValue);
+      window.form.applyEffectDepth(effectValue);
     }
   }
+
+  window.addEventListener('mouseup', function () {
+    dragging = false;
+  });
 
   window.addEventListener('mousemove', function (evt) {
     handleSlider(evt.clientX);
   });
+
+  effectPinElement.addEventListener('mousedown', function () {
+    dragging = true;
+  });
+
+  window.slider = {
+    fillValues: fillValues,
+    setEffectValue: setEffectValue
+  };
 })();
 

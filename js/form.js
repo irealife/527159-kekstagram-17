@@ -17,8 +17,12 @@
   var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
   var fragment = document.createDocumentFragment();
   var elementMain = document.querySelector('main');
+  var errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  var errorButtons = errorMessage.querySelectorAll('.error__button');
+  var successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  var successButton = successMessage.querySelector('.success__button');
 
-  function onEditPhotoEscPress(evt) {
+  function onKeyUp(evt) {
     if (evt.keyCode === 27 && document.activeElement !== inputComments) {
       closeEditPhoto();
     }
@@ -30,62 +34,68 @@
     fragment.appendChild(uploadMessage);
     elementMain.appendChild(fragment);
 
-    window.sendDataToServer(uploadURL, formData, uploadSuccess, uploadError);
+    window.backend.sendDataToServer(uploadURL, formData, onUploadSuccess, onUploadError);
   }
-
-  submitButton.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    if (form.checkValidity()) {
-      sendFormData();
-    }
-  });
 
   function openEditPhoto() {
     overlayPhoto.classList.remove('hidden');
-    document.addEventListener('keydown', onEditPhotoEscPress);
-    window.fillValues();
-    window.applyEffectDepth(100);
+    document.addEventListener('keyup', onKeyUp);
+    window.slider.fillValues();
+    applyEffectDepth(100);
     effectLevel.classList.add('hidden');
-    window.resetLoadPicture();
+    window.filter.resetLoadPicture();
   }
 
-  var uploadError = function (message) {
+  function onUploadError(message) {
     window.console.error(message);
     /* скрытие сообщения "Загружаем" */
     if (elementMain.contains(uploadMessage)) {
       elementMain.removeChild(uploadMessage);
     }
 
-    window.showMessage('error', message, [sendFormData, closeEditPhoto]);
-  };
+    document.addEventListener('keyup', hideErrorMessage);
+    elementMain.appendChild(errorMessage);
+  }
 
-  var uploadSuccess = function (data) {
+  function onUploadSuccess(data) {
     if (!data || !data.length) {
-      uploadError('Сервер прислал пустые данные');
+      onUploadError('Сервер прислал пустые данные');
     }
     /* скрытие сообщения "Загружаем" */
     if (elementMain.contains(uploadMessage)) {
       elementMain.removeChild(uploadMessage);
     }
 
-    window.showMessage('success', 'Данные отправлены', [closeEditPhoto]);
-  };
+    document.addEventListener('keyup', onKeyUp);
+    elementMain.appendChild(successMessage);
+  }
+
+  function hideErrorMessage(evt) {
+    evt.stopPropagation();
+    if (evt.path.includes(errorButtons[0]) || evt.path.includes(errorButtons[1]) || evt.keyCode === 27) {
+      document.removeEventListener('keyup', hideErrorMessage);
+      elementMain.removeChild(errorMessage);
+    }
+    if (evt.target === errorButtons[0]) {
+      sendFormData();
+    } else if (evt.target === errorButtons[1] || evt.keyCode === 27) {
+      closeEditPhoto();
+    }
+  }
+
+  function hideSuccessMessage() {
+    document.removeEventListener('keyup', onKeyUp);
+    elementMain.removeChild(successMessage);
+    closeEditPhoto();
+  }
 
   function closeEditPhoto() {
     form.reset();
     overlayPhoto.classList.add('hidden');
-    document.removeEventListener('keydown', onEditPhotoEscPress);
+    document.removeEventListener('keyup', onKeyUp);
   }
 
-  uploadPhoto.addEventListener('change', function () {
-    openEditPhoto();
-  });
-
-  onCloseClick.addEventListener('click', function () {
-    closeEditPhoto();
-  });
-
-  window.applyEffectDepth = function (value) {
+  function applyEffectDepth(value) {
     var effectTypeValue;
     switch (effectType) {
       case 'chrome':
@@ -105,14 +115,40 @@
         break;
     }
     loadPicture.style.filter = effectTypeValue;
-  };
+  }
+
+  uploadPhoto.addEventListener('change', function () {
+    openEditPhoto();
+  });
+
+  onCloseClick.addEventListener('click', function () {
+    closeEditPhoto();
+  });
+
+  submitButton.addEventListener('click', function (evt) {
+    if (form.checkValidity()) {
+      evt.preventDefault();
+      sendFormData();
+    }
+  });
+
+  errorButtons[0].addEventListener('click', hideErrorMessage);
+  errorButtons[1].addEventListener('click', hideErrorMessage);
+  errorMessage.addEventListener('click', hideErrorMessage);
+
+  successButton.addEventListener('click', hideSuccessMessage);
+  successMessage.addEventListener('click', hideSuccessMessage);
 
   document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
     radioButton.addEventListener('change', function () {
       effectType = radioButton.value;
-      window.effectsWorker(radioButton);
+      window.filter.effectsWorker(radioButton);
     });
   });
 
-  window.hashTagsInit();
+  window.hashtags.hashTagsInit();
+
+  window.form = {
+    applyEffectDepth: applyEffectDepth
+  };
 })();

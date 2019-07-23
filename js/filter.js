@@ -5,19 +5,24 @@
   var effectLevel = document.querySelector('.effect-level');
   var effectValue;
 
-  window.resetLoadPicture = function () {
+  function resetLoadPicture() {
     loadPicture.className = '';
     loadPicture.style.filter = '';
-  };
+  }
 
-  window.effectsWorker = function (radioButton) {
+  function effectsWorker(radioButton) {
     if (radioButton.checked) {
       effectValue = 100;
-      window.setEffectValue(effectValue);
-      window.resetLoadPicture();
+      window.slider.setEffectValue(effectValue);
+      resetLoadPicture();
       loadPicture.classList.add('effects__preview--' + radioButton.value);
       effectLevel.classList.toggle('hidden', radioButton.value === 'none');
     }
+  }
+
+  window.filter = {
+    resetLoadPicture: resetLoadPicture,
+    effectsWorker: effectsWorker
   };
 })();
 

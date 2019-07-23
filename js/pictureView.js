@@ -17,7 +17,7 @@
   var bigPictureCommentsLoader = bigPicture.querySelector('.social__comments-loader');
   var bigPictureCancelButton = bigPicture.querySelector('.big-picture__cancel');
 
-  window.showBigPicture = function (imageData) {
+  function showBigPicture(imageData) {
     document.addEventListener('keydown', onBigPictureEscPress);
     bigPictureImg.src = imageData.url;
     bigPictureAuthorAvatar.src = 'img/avatar-' + Math.round(0.5 + Math.random() * 6) + '.svg';
@@ -31,7 +31,7 @@
     bigPictureCommentsCount.classList.add('visually-hidden');
     bigPictureCommentsLoader.classList.add('visually-hidden');
     togglePicturePopup(true);
-  };
+  }
 
   function togglePicturePopup(isShow) {
     body.classList.toggle('modal-open', isShow);
@@ -63,4 +63,8 @@
   }
 
   bigPictureCancelButton.addEventListener('click', closeBigPicture);
+
+  window.pictureView = {
+    showBigPicture: showBigPicture
+  };
 })();

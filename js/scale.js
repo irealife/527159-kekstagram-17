@@ -16,14 +16,6 @@
     uploadPreviewPhoto.style.transform = 'scale(' + size / 100 + ')';
   }
 
-  controlSmall.addEventListener('click', function () {
-    controlScale(-1);
-  });
-
-  controlBig.addEventListener('click', function () {
-    controlScale(1);
-  });
-
   function controlScale(direction) {
     currentSize = currentSize + STEP * direction;
     if (currentSize < MIN_SIZE) {
@@ -34,5 +26,13 @@
     resizeValue.value = currentSize + '%';
     changeScale(currentSize);
   }
+
+  controlSmall.addEventListener('click', function () {
+    controlScale(-1);
+  });
+
+  controlBig.addEventListener('click', function () {
+    controlScale(1);
+  });
 })();
 
