@@ -13,7 +13,7 @@
     imgFilters.classList.remove('img-filters--inactive');
 
     filterButtons.forEach(function (button) {
-      button.addEventListener('click', window.debounce.debounce(function () {
+      button.addEventListener('click', window.utils.debounce(function () {
         if (activeButton === button) {
           return;
         }
