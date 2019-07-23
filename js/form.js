@@ -49,9 +49,7 @@
   function onUploadError(message) {
     window.console.error(message);
     /* скрытие сообщения "Загружаем" */
-    if (elementMain.contains(uploadMessage)) {
-      elementMain.removeChild(uploadMessage);
-    }
+    elementMain.removeChild(uploadMessage);
 
     document.addEventListener('keyup', hideErrorMessage);
     elementMain.appendChild(errorMessage);
@@ -62,9 +60,7 @@
       onUploadError('Сервер прислал пустые данные');
     }
     /* скрытие сообщения "Загружаем" */
-    if (elementMain.contains(uploadMessage)) {
-      elementMain.removeChild(uploadMessage);
-    }
+    elementMain.removeChild(uploadMessage);
 
     document.addEventListener('keyup', onKeyUp);
     elementMain.appendChild(successMessage);
@@ -72,15 +68,8 @@
 
   function hideErrorMessage(evt) {
     evt.stopPropagation();
-    if (evt.path.includes(errorButtons[0]) || evt.path.includes(errorButtons[1]) || evt.keyCode === 27) {
-      document.removeEventListener('keyup', hideErrorMessage);
-      elementMain.removeChild(errorMessage);
-    }
-    if (evt.target === errorButtons[0]) {
-      sendFormData();
-    } else if (evt.target === errorButtons[1] || evt.keyCode === 27) {
-      closeEditPhoto();
-    }
+    document.removeEventListener('keyup', hideErrorMessage);
+    elementMain.removeChild(errorMessage);
   }
 
   function hideSuccessMessage() {
@@ -132,11 +121,20 @@
     }
   });
 
-  errorButtons[0].addEventListener('click', hideErrorMessage);
-  errorButtons[1].addEventListener('click', hideErrorMessage);
-  errorMessage.addEventListener('click', hideErrorMessage);
+  errorButtons[0].addEventListener('click', function (evt) {
+    hideErrorMessage(evt);
+    sendFormData();
+  });
+  errorButtons[1].addEventListener('click', function (evt) {
+    hideErrorMessage(evt);
+    closeEditPhoto();
+  });
+  // errorMessage.addEventListener('click', hideErrorMessage);
 
-  successButton.addEventListener('click', hideSuccessMessage);
+  successButton.addEventListener('click', function(evt) {
+    hideErrorMessage(evt);
+    closeEditPhoto();
+  });
   successMessage.addEventListener('click', hideSuccessMessage);
 
   document.querySelectorAll('.effects__radio').forEach(function (radioButton) {

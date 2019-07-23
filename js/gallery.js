@@ -54,9 +54,6 @@
       document.removeEventListener('keyup', onKeyUp);
       elementMain.removeChild(errorMessage);
     }
-    if (evt.target === buttons[0]) {
-      window.backend.getDataFromServer(URL, onSuccess, onError);
-    }
   }
 
   function onKeyUp(evt) {
@@ -66,7 +63,10 @@
   }
 
   buttons[1].textContent = 'Ну и ладно!';
-  buttons[0].addEventListener('click', hideMessage);
+  buttons[0].addEventListener('click', function (evt) {
+    hideMessage(evt);
+    window.backend.getDataFromServer(URL, onSuccess, onError);
+  });
   buttons[1].addEventListener('click', hideMessage);
   errorMessage.addEventListener('click', hideMessage);
 
