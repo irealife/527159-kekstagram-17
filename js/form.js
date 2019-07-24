@@ -128,6 +128,11 @@
     hideErrorMessage(evt);
     closeEditPhoto();
   });
+  errorMessage.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('error')) {
+      hideErrorMessage(evt);
+    }
+  });
 
   successButton.addEventListener('click', function (evt) {
     hideSuccessMessage(evt);
