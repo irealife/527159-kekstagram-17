@@ -4,10 +4,9 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
-
-  window.gallery = {
-    picturesData: []
-  };
+  var elementMain = document.querySelector('main');
+  var errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  var buttons = errorMessage.querySelectorAll('.error__button');
 
   function generatePicture(imageData) {
     var pictureElement = pictureTemplate.cloneNode(true);
@@ -15,12 +14,12 @@
     pictureElement.querySelector('.picture__likes').textContent = imageData.likes.toString();
     pictureElement.querySelector('.picture__comments').textContent = imageData.comments.length.toString();
     pictureElement.addEventListener('click', function () {
-      window.showBigPicture(imageData);
+      window.pictureView.showBigPicture(imageData);
     });
     return pictureElement;
   }
 
-  window.renderPictures = function (picturesData) {
+  function renderPictures(picturesData) {
     var allPictures = pictures.querySelectorAll('.picture');
     allPictures.forEach(function (picture) {
       pictures.removeChild(picture);
@@ -31,25 +30,53 @@
       fragment.appendChild(generatePicture(image));
     });
     pictures.appendChild(fragment);
-  };
+  }
 
-  var onError = function (message) {
+  function onError(message) {
     window.console.error(message);
-    window.showMessage('error', 'Не удалось загрузить изображения', [function () {
-      window.getDataFromServer(URL, onSuccess, onError);
-    }], ['Попробовать снова', 'Ну и ладно!']);
-  };
+    document.addEventListener('keyup', onKeyUp);
+    elementMain.appendChild(errorMessage);
+  }
 
-  var onSuccess = function (data) {
+  function onSuccess(data) {
     if (!data || !data.length) {
       onError('Сервер прислал пустые данные');
     } else {
       window.gallery.picturesData = data;
-      window.renderPictures(data);
-      window.initPicturesFilter();
+      renderPictures(data);
+      window.galleryFilter.initPicturesFilter();
     }
-  };
+  }
 
-  window.getDataFromServer(URL, onSuccess, onError);
+  function hideMessage(evt) {
+    evt.stopPropagation();
+    document.removeEventListener('keyup', onKeyUp);
+    elementMain.removeChild(errorMessage);
+  }
+
+  function onKeyUp(evt) {
+    if (evt.keyCode === 27) {
+      hideMessage(evt);
+    }
+  }
+
+  buttons[1].textContent = 'Ну и ладно!';
+  buttons[0].addEventListener('click', function (evt) {
+    hideMessage(evt);
+    window.backend.getDataFromServer(URL, onSuccess, onError);
+  });
+  buttons[1].addEventListener('click', hideMessage);
+  errorMessage.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('error')) {
+      hideMessage(evt);
+    }
+  });
+
+  window.backend.getDataFromServer(URL, onSuccess, onError);
+
+  window.gallery = {
+    picturesData: [],
+    renderPictures: renderPictures
+  };
 
 })();

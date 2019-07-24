@@ -7,11 +7,11 @@
   var validHashTagsArray = [];
   var hashTagsString = document.querySelector('.text__hashtags');
 
-  window.hashTagsInit = function () {
+  function hashTagsInit() {
     hashTagsString.addEventListener('change', function () {
       hashTagsCheck();
     });
-  };
+  }
 
   function hashTagClearError() {
     hashTagsString.classList.remove('field-error');
@@ -57,4 +57,8 @@
   }
 
   hashTagsString.addEventListener('keyup', hashTagClearError);
+
+  window.hashtags = {
+    hashTagsInit: hashTagsInit
+  };
 })();
