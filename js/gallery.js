@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
+  var URL = 'https://js.dump.academy/kekstagram/data5';
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
   var elementMain = document.querySelector('main');
@@ -67,7 +67,7 @@
   });
   buttons[1].addEventListener('click', hideMessage);
   errorMessage.addEventListener('click', function (evt) {
-    if (!evt.path.includes(errorMessage.querySelector('.error__inner'))) {
+    if (evt.target.classList.contains('error')) {
       hideMessage(evt);
     }
   });
