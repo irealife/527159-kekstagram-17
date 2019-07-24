@@ -78,5 +78,4 @@
     picturesData: [],
     renderPictures: renderPictures
   };
-
 })();

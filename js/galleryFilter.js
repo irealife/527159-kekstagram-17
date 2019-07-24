@@ -27,13 +27,6 @@
 
   function compareComments(photo1, photo2) {
     return photo2.comments.length - photo1.comments.length;
-    // if (photo1.comments.length < photo2.comments.length) {
-    //   return 1;
-    // }
-    // if (photo1.comments.length > photo2.comments.length) {
-    //   return -1;
-    // }
-    // return 0;
   }
 
   function compareRandom() {

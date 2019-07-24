@@ -13,7 +13,6 @@
   var loadPicture = document.querySelector('.img-upload__preview img');
   var effectType = 'none';
   var form = document.querySelector('#upload-select-image');
-  /* элементы для сообщения "Загружаем" */
   var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
   var fragment = document.createDocumentFragment();
   var elementMain = document.querySelector('main');
@@ -40,7 +39,6 @@
 
   function sendFormData() {
     var formData = new FormData(form);
-    /* вывод сообщения "Загружаем" */
     fragment.appendChild(uploadMessage);
     elementMain.appendChild(fragment);
 
@@ -69,7 +67,6 @@
     if (!data || !data.length) {
       onUploadError('Сервер прислал пустые данные');
     }
-    /* скрытие сообщения "Загружаем" */
     elementMain.removeChild(uploadMessage);
 
     document.addEventListener('keyup', onKeyUp);
