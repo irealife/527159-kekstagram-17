@@ -50,10 +50,8 @@
 
   function hideMessage(evt) {
     evt.stopPropagation();
-    if (!evt.path.includes(errorMessage.querySelector('.error__inner')) || evt.path.includes(buttons[0]) || evt.path.includes(buttons[1])) {
-      document.removeEventListener('keyup', onKeyUp);
-      elementMain.removeChild(errorMessage);
-    }
+    document.removeEventListener('keyup', onKeyUp);
+    elementMain.removeChild(errorMessage);
   }
 
   function onKeyUp(evt) {
@@ -68,7 +66,11 @@
     window.backend.getDataFromServer(URL, onSuccess, onError);
   });
   buttons[1].addEventListener('click', hideMessage);
-  errorMessage.addEventListener('click', hideMessage);
+  errorMessage.addEventListener('click', function (evt) {
+    if (!evt.path.includes(errorMessage.querySelector('.error__inner'))) {
+      hideMessage(evt);
+    }
+  });
 
   window.backend.getDataFromServer(URL, onSuccess, onError);
 

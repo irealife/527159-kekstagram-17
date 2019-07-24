@@ -73,7 +73,6 @@
   }
 
   function hideSuccessMessage() {
-    document.removeEventListener('keyup', onKeyUp);
     elementMain.removeChild(successMessage);
     closeEditPhoto();
   }
@@ -129,10 +128,9 @@
     hideErrorMessage(evt);
     closeEditPhoto();
   });
-  // errorMessage.addEventListener('click', hideErrorMessage);
 
-  successButton.addEventListener('click', function(evt) {
-    hideErrorMessage(evt);
+  successButton.addEventListener('click', function (evt) {
+    hideSuccessMessage(evt);
     closeEditPhoto();
   });
   successMessage.addEventListener('click', hideSuccessMessage);
