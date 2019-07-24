@@ -28,6 +28,16 @@
     }
   }
 
+  function readFile(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        loadPicture.src = evt.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
   function sendFormData() {
     var formData = new FormData(form);
     /* вывод сообщения "Загружаем" */
@@ -80,6 +90,7 @@
   function closeEditPhoto() {
     form.reset();
     overlayPhoto.classList.add('hidden');
+    loadPicture.src = '';
     document.removeEventListener('keyup', onKeyUp);
   }
 
@@ -147,9 +158,12 @@
     });
   });
 
+  loadPicture.src = '';
+
   window.hashtags.hashTagsInit();
 
   window.form = {
+    readFile: readFile,
     applyEffectDepth: applyEffectDepth
   };
 })();
