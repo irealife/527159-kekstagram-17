@@ -29,9 +29,9 @@
     bigPictureCommentsCountTotal.textContent = imageData.comments.length.toString();
     bigPictureCommentsList.textContent = '';
     bigPictureCommentsStart = 0;
-    renderComments();
     bigPictureCommentsLoader.classList.remove('hidden');
     bigPictureCommentsLoader.addEventListener('click', renderComments);
+    renderComments();
     togglePicturePopup(true);
   }
 
