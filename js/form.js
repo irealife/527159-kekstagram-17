@@ -13,14 +13,6 @@
   var loadPicture = document.querySelector('.img-upload__preview img');
   var effectType = 'none';
   var form = document.querySelector('#upload-select-image');
-  /* элементы для сообщения "Загружаем" */
-  var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
-  var fragment = document.createDocumentFragment();
-  var elementMain = document.querySelector('main');
-  var errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-  var errorButtons = errorMessage.querySelectorAll('.error__button');
-  var successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-  var successButton = successMessage.querySelector('.success__button');
 
   function onKeyUp(evt) {
     if (evt.keyCode === 27 && document.activeElement !== inputComments) {
@@ -40,16 +32,13 @@
 
   function sendFormData() {
     var formData = new FormData(form);
-    /* вывод сообщения "Загружаем" */
-    fragment.appendChild(uploadMessage);
-    elementMain.appendChild(fragment);
-
+    window.popup.show('uploadMessage');
     window.backend.sendDataToServer(uploadURL, formData, onUploadSuccess, onUploadError);
   }
 
   function openEditPhoto() {
     overlayPhoto.classList.remove('hidden');
-    document.addEventListener('keyup', onKeyUp);
+    window.addEventListener('keyup', onKeyUp);
     window.slider.fillValues();
     applyEffectDepth(100);
     effectLevel.classList.add('hidden');
@@ -58,40 +47,23 @@
 
   function onUploadError(message) {
     window.console.error(message);
-    /* скрытие сообщения "Загружаем" */
-    elementMain.removeChild(uploadMessage);
-
-    document.addEventListener('keyup', hideErrorMessage);
-    elementMain.appendChild(errorMessage);
+    window.popup.hide();
+    window.popup.show('uploadError');
   }
 
   function onUploadSuccess(data) {
     if (!data || !data.length) {
       onUploadError('Сервер прислал пустые данные');
     }
-    /* скрытие сообщения "Загружаем" */
-    elementMain.removeChild(uploadMessage);
-
-    document.addEventListener('keyup', onKeyUp);
-    elementMain.appendChild(successMessage);
-  }
-
-  function hideErrorMessage(evt) {
-    evt.stopPropagation();
-    document.removeEventListener('keyup', hideErrorMessage);
-    elementMain.removeChild(errorMessage);
-  }
-
-  function hideSuccessMessage() {
-    elementMain.removeChild(successMessage);
-    closeEditPhoto();
+    window.popup.hide();
+    window.popup.show('uploadSuccess');
   }
 
   function closeEditPhoto() {
     form.reset();
     overlayPhoto.classList.add('hidden');
     loadPicture.src = '';
-    document.removeEventListener('keyup', onKeyUp);
+    window.removeEventListener('keyup', onKeyUp);
   }
 
   function applyEffectDepth(value) {
@@ -131,26 +103,6 @@
     }
   });
 
-  errorButtons[0].addEventListener('click', function (evt) {
-    hideErrorMessage(evt);
-    sendFormData();
-  });
-  errorButtons[1].addEventListener('click', function (evt) {
-    hideErrorMessage(evt);
-    closeEditPhoto();
-  });
-  errorMessage.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('error')) {
-      hideErrorMessage(evt);
-    }
-  });
-
-  successButton.addEventListener('click', function (evt) {
-    hideSuccessMessage(evt);
-    closeEditPhoto();
-  });
-  successMessage.addEventListener('click', hideSuccessMessage);
-
   document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
     radioButton.addEventListener('change', function () {
       effectType = radioButton.value;
@@ -164,6 +116,8 @@
 
   window.form = {
     readFile: readFile,
-    applyEffectDepth: applyEffectDepth
+    applyEffectDepth: applyEffectDepth,
+    send: sendFormData,
+    close: closeEditPhoto
   };
 })();

@@ -49,4 +49,3 @@
     setEffectValue: setEffectValue
   };
 })();
-

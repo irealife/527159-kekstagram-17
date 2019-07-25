@@ -4,9 +4,6 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
-  var elementMain = document.querySelector('main');
-  var errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-  var buttons = errorMessage.querySelectorAll('.error__button');
 
   function generatePicture(imageData) {
     var pictureElement = pictureTemplate.cloneNode(true);
@@ -34,8 +31,7 @@
 
   function onError(message) {
     window.console.error(message);
-    document.addEventListener('keyup', onKeyUp);
-    elementMain.appendChild(errorMessage);
+    window.popup.show('downloadError');
   }
 
   function onSuccess(data) {
@@ -48,35 +44,15 @@
     }
   }
 
-  function hideMessage(evt) {
-    evt.stopPropagation();
-    document.removeEventListener('keyup', onKeyUp);
-    elementMain.removeChild(errorMessage);
-  }
-
-  function onKeyUp(evt) {
-    if (evt.keyCode === 27) {
-      hideMessage(evt);
-    }
-  }
-
-  buttons[1].textContent = 'Ну и ладно!';
-  buttons[0].addEventListener('click', function (evt) {
-    hideMessage(evt);
+  function getData() {
     window.backend.getDataFromServer(URL, onSuccess, onError);
-  });
-  buttons[1].addEventListener('click', hideMessage);
-  errorMessage.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('error')) {
-      hideMessage(evt);
-    }
-  });
+  }
 
-  window.backend.getDataFromServer(URL, onSuccess, onError);
+  getData();
 
   window.gallery = {
     picturesData: [],
+    getData: getData,
     renderPictures: renderPictures
   };
-
 })();
