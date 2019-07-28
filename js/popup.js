@@ -11,10 +11,10 @@
     }
   }
 
-  function show(messageObject) {
+  function show(messageElement) {
     document.addEventListener('keyup', onKeyUp);
-    objectShown = messageObject;
-    elementMain.appendChild(messageObject);
+    objectShown = messageElement;
+    elementMain.appendChild(messageElement);
   }
 
   function hide() {
