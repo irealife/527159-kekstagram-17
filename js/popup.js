@@ -2,97 +2,30 @@
 
 (function () {
   var elementMain = document.querySelector('main');
-  var downloadErrorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-  var downloadErrorButtons = downloadErrorMessage.querySelectorAll('.error__button');
-  var uploadErrorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-  var uploadErrorButtons = uploadErrorMessage.querySelectorAll('.error__button');
-  var uploadSuccessMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-  var uploadSuccessButton = uploadSuccessMessage.querySelector('.success__button');
-  var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
-  var messageTypeShown = '';
+  var objectShown = 'none';
 
   function onKeyUp(evt) {
     evt.stopPropagation();
-    if (evt.keyCode === 27 && messageTypeShown !== 'uploadMessage') {
+    if (evt.keyCode === 27 && !objectShown.classList.contains('img-upload__message')) {
       hide();
     }
   }
 
-  function show(type) {
-    switch (type) {
-      case 'downloadError':
-        elementMain.appendChild(downloadErrorMessage);
-        break;
-      case 'uploadError':
-        elementMain.appendChild(uploadErrorMessage);
-        break;
-      case 'uploadSuccess':
-        elementMain.appendChild(uploadSuccessMessage);
-        break;
-      case 'uploadMessage':
-        elementMain.appendChild(uploadMessage);
-        break;
-    }
+  function show(object) {
     document.addEventListener('keyup', onKeyUp);
-    messageTypeShown = type;
+    objectShown = object;
+    elementMain.appendChild(object);
   }
 
   function hide() {
-    switch (messageTypeShown) {
-      case 'downloadError':
-        elementMain.removeChild(downloadErrorMessage);
-        break;
-      case 'uploadError':
-        elementMain.removeChild(uploadErrorMessage);
-        break;
-      case 'uploadSuccess':
-        elementMain.removeChild(uploadSuccessMessage);
-        break;
-      case 'uploadMessage':
-        elementMain.removeChild(uploadMessage);
-        break;
+    if (!objectShown.classList.contains('img-upload__message')) {
+      document.removeEventListener('keyup', onKeyUp);
     }
-    document.removeEventListener('keyup', onKeyUp);
-    messageTypeShown = '';
+    if (objectShown !== 'none') {
+      elementMain.removeChild(objectShown);
+    }
+    objectShown = 'none';
   }
-
-  downloadErrorButtons[1].textContent = 'Ну и ладно!';
-  downloadErrorButtons[0].addEventListener('click', function () {
-    hide();
-    window.gallery.getData();
-  });
-  downloadErrorButtons[1].addEventListener('click', hide);
-  downloadErrorMessage.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('error')) {
-      hide();
-    }
-  });
-
-  uploadErrorButtons[0].addEventListener('click', function () {
-    hide();
-    window.form.send();
-  });
-  uploadErrorButtons[1].addEventListener('click', function () {
-    hide();
-    window.form.close();
-  });
-  uploadErrorMessage.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('error')) {
-      hide();
-      window.form.close();
-    }
-  });
-
-  uploadSuccessButton.addEventListener('click', function () {
-    hide();
-    window.form.close();
-  });
-  uploadSuccessMessage.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('success')) {
-      hide();
-      window.form.close();
-    }
-  });
 
   window.popup = {
     show: show,

@@ -3,7 +3,7 @@
 // добавление фото для редактирования и закрытие формы редактирования
 
 (function () {
-  var uploadURL = 'https://js.dump.academy/kekstagram';
+  var uploadURL = 'https://js.dump.academy/kekstagram5';
   var overlayPhoto = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level');
   var uploadPhoto = document.querySelector('#upload-file');
@@ -13,6 +13,11 @@
   var loadPicture = document.querySelector('.img-upload__preview img');
   var effectType = 'none';
   var form = document.querySelector('#upload-select-image');
+  var uploadErrorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  var uploadErrorButtons = uploadErrorMessage.querySelectorAll('.error__button');
+  var uploadSuccessMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  var uploadSuccessButton = uploadSuccessMessage.querySelector('.success__button');
+  var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
 
   function onKeyUp(evt) {
     if (evt.keyCode === 27 && document.activeElement !== inputComments) {
@@ -32,7 +37,7 @@
 
   function sendFormData() {
     var formData = new FormData(form);
-    window.popup.show('uploadMessage');
+    window.popup.show(uploadMessage);
     window.backend.sendDataToServer(uploadURL, formData, onUploadSuccess, onUploadError);
   }
 
@@ -48,7 +53,7 @@
   function onUploadError(message) {
     window.console.error(message);
     window.popup.hide();
-    window.popup.show('uploadError');
+    window.popup.show(uploadErrorMessage);
   }
 
   function onUploadSuccess(data) {
@@ -56,7 +61,7 @@
       onUploadError('Сервер прислал пустые данные');
     }
     window.popup.hide();
-    window.popup.show('uploadSuccess');
+    window.popup.show(uploadSuccessMessage);
   }
 
   function closeEditPhoto() {
@@ -100,6 +105,32 @@
     if (form.checkValidity()) {
       evt.preventDefault();
       sendFormData();
+    }
+  });
+
+  uploadSuccessButton.addEventListener('click', function () {
+    window.popup.hide();
+    window.form.close();
+  });
+  uploadSuccessMessage.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('success')) {
+      window.popup.hide();
+      window.form.close();
+    }
+  });
+
+  uploadErrorButtons[0].addEventListener('click', function () {
+    window.popup.hide();
+    window.form.send();
+  });
+  uploadErrorButtons[1].addEventListener('click', function () {
+    window.popup.hide();
+    window.form.close();
+  });
+  uploadErrorMessage.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('error')) {
+      window.popup.hide();
+      window.form.close();
     }
   });
 

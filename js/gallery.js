@@ -4,6 +4,8 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
+  var downloadErrorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  var downloadErrorButtons = downloadErrorMessage.querySelectorAll('.error__button');
 
   function generatePicture(imageData) {
     var pictureElement = pictureTemplate.cloneNode(true);
@@ -31,7 +33,7 @@
 
   function onError(message) {
     window.console.error(message);
-    window.popup.show('downloadError');
+    window.popup.show(downloadErrorMessage);
   }
 
   function onSuccess(data) {
@@ -47,6 +49,18 @@
   function getData() {
     window.backend.getDataFromServer(URL, onSuccess, onError);
   }
+
+  downloadErrorButtons[1].textContent = 'Ну и ладно!';
+  downloadErrorButtons[0].addEventListener('click', function () {
+    window.popup.hide();
+    window.gallery.getData();
+  });
+  downloadErrorButtons[1].addEventListener('click', window.popup.hide);
+  downloadErrorMessage.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('error')) {
+      window.popup.hide();
+    }
+  });
 
   getData();
 
