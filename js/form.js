@@ -3,7 +3,7 @@
 // добавление фото для редактирования и закрытие формы редактирования
 
 (function () {
-  var uploadURL = 'https://js.dump.academy/kekstagram5';
+  var uploadURL = 'https://js.dump.academy/kekstagram';
   var overlayPhoto = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level');
   var uploadPhoto = document.querySelector('#upload-file');
