@@ -1,28 +1,25 @@
 'use strict';
 
 (function () {
-  var loadPicture = document.querySelector('.img-upload__preview img');
-  var effectLevel = document.querySelector('.effect-level');
-  var effectValue;
+  var EFFECT_MAX_VALUE = 100;
 
   function resetLoadPicture() {
-    loadPicture.className = '';
-    loadPicture.style.filter = '';
+    window.form.pictureElement.className = '';
+    window.form.pictureElement.style.filter = '';
   }
 
-  function effectsWorker(radioButton) {
+  function applyEffect(radioButton) {
     if (radioButton.checked) {
-      effectValue = 100;
-      window.slider.setEffectValue(effectValue);
+      window.slider.setEffectValue(EFFECT_MAX_VALUE);
       resetLoadPicture();
-      loadPicture.classList.add('effects__preview--' + radioButton.value);
-      effectLevel.classList.toggle('hidden', radioButton.value === 'none');
+      window.form.pictureElement.classList.add('effects__preview--' + radioButton.value);
+      window.form.pictureEffectLevelElement.classList.toggle('hidden', radioButton.value === 'none');
     }
   }
 
   window.filter = {
-    resetLoadPicture: resetLoadPicture,
-    effectsWorker: effectsWorker
+    resetPicture: resetLoadPicture,
+    applyEffect: applyEffect
   };
 })();
 

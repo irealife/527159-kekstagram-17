@@ -3,15 +3,11 @@
 // Валидация
 
 (function () {
+  var MAX_COMMENT_LENGTH = 20;
+  var MAX_COMMENT_COUNT = 5;
   var hashTagsArray = [];
   var validHashTagsArray = [];
   var hashTagsString = document.querySelector('.text__hashtags');
-
-  function hashTagsInit() {
-    hashTagsString.addEventListener('change', function () {
-      hashTagsCheck();
-    });
-  }
 
   function hashTagClearError() {
     hashTagsString.classList.remove('field-error');
@@ -43,9 +39,9 @@
       hashTagsString.setCustomValidity('хештег должен начинаться с символа #');
     } else if (tag.length === 1 && tag[0] === '#') {
       hashTagsString.setCustomValidity('хештег не должен состоять только из символа #');
-    } else if (hashTagsArray.length > 5) {
+    } else if (hashTagsArray.length > MAX_COMMENT_COUNT) {
       hashTagsString.setCustomValidity('не должно быть более 5 хэштегов');
-    } else if (tag.length > 20) {
+    } else if (tag.length > MAX_COMMENT_LENGTH) {
       hashTagsString.setCustomValidity('длина хештега не должна быть более 20 символов');
     } else if (validHashTagsArray.includes(tag)) {
       hashTagsString.setCustomValidity('хештеги не должны повторяться');
@@ -56,9 +52,11 @@
     return validity;
   }
 
-  hashTagsString.addEventListener('keyup', hashTagClearError);
+  hashTagsString.addEventListener('keyup', function () {
+    hashTagClearError();
+  });
 
-  window.hashtags = {
-    hashTagsInit: hashTagsInit
-  };
+  hashTagsString.addEventListener('change', function () {
+    hashTagsCheck();
+  });
 })();

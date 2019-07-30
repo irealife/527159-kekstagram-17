@@ -3,6 +3,11 @@
 // добавление фото для редактирования и закрытие формы редактирования
 
 (function () {
+  var ESCAPE_KEY_CODE = 27;
+  var MAX_EFFECT_DEPTH = 100;
+  var BLUR_MULTIPLIER = 3;
+  var BRIGHTNESS_MULTIPLIER = 2;
+  var BRIGHTNESS_ADDENDUM = 1;
   var uploadURL = 'https://js.dump.academy/kekstagram';
   var overlayPhoto = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level');
@@ -19,18 +24,20 @@
   var uploadSuccessButton = uploadSuccessMessage.querySelector('.success__button');
   var uploadMessage = document.querySelector('#messages').content.querySelector('.img-upload__message').cloneNode(true);
 
-  function onKeyUp(evt) {
-    if (evt.keyCode === 27 && document.activeElement !== inputComments) {
+  function onWindowKeyUp(evt) {
+    if (evt.keyCode === ESCAPE_KEY_CODE && document.activeElement !== inputComments) {
       closeEditPhoto();
     }
+  }
+
+  function onReaderLoad(evt) {
+    loadPicture.src = evt.target.result;
   }
 
   function readFile(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
-      reader.onload = function (evt) {
-        loadPicture.src = evt.target.result;
-      };
+      reader.addEventListener('load', onReaderLoad);
       reader.readAsDataURL(input.files[0]);
     }
   }
@@ -38,16 +45,16 @@
   function sendFormData() {
     var formData = new FormData(form);
     window.popup.show(uploadMessage);
-    window.backend.sendDataToServer(uploadURL, formData, onUploadSuccess, onUploadError);
+    window.backend.sendData(uploadURL, formData, onUploadSuccess, onUploadError);
   }
 
   function openEditPhoto() {
     overlayPhoto.classList.remove('hidden');
-    window.addEventListener('keyup', onKeyUp);
+    window.addEventListener('keyup', onWindowKeyUp);
     window.slider.fillValues();
-    applyEffectDepth(100);
+    applyEffectDepth(MAX_EFFECT_DEPTH);
     effectLevel.classList.add('hidden');
-    window.filter.resetLoadPicture();
+    window.filter.resetPicture();
   }
 
   function onUploadError(message) {
@@ -68,26 +75,26 @@
     form.reset();
     overlayPhoto.classList.add('hidden');
     loadPicture.src = '';
-    window.removeEventListener('keyup', onKeyUp);
+    window.removeEventListener('keyup', onWindowKeyUp);
   }
 
   function applyEffectDepth(value) {
     var effectTypeValue;
     switch (effectType) {
       case 'chrome':
-        effectTypeValue = 'grayscale(' + (value / 100) + ')';
+        effectTypeValue = 'grayscale(' + (value / MAX_EFFECT_DEPTH) + ')';
         break;
       case 'sepia':
-        effectTypeValue = 'sepia(' + (value / 100) + ')';
+        effectTypeValue = 'sepia(' + (value / MAX_EFFECT_DEPTH) + ')';
         break;
       case 'marvin':
         effectTypeValue = 'invert(' + value + '%)';
         break;
       case 'phobos':
-        effectTypeValue = 'blur(' + (value * 3) / 100 + 'px)';
+        effectTypeValue = 'blur(' + (value * BLUR_MULTIPLIER) / MAX_EFFECT_DEPTH + 'px)';
         break;
       case 'heat':
-        effectTypeValue = 'brightness(' + (((value * 2) / 100) + 1) + ')';
+        effectTypeValue = 'brightness(' + (((value * BRIGHTNESS_MULTIPLIER) / MAX_EFFECT_DEPTH) + BRIGHTNESS_ADDENDUM) + ')';
         break;
     }
     loadPicture.style.filter = effectTypeValue;
@@ -137,18 +144,18 @@
   document.querySelectorAll('.effects__radio').forEach(function (radioButton) {
     radioButton.addEventListener('change', function () {
       effectType = radioButton.value;
-      window.filter.effectsWorker(radioButton);
+      window.filter.applyEffect(radioButton);
     });
   });
 
   loadPicture.src = '';
 
-  window.hashtags.hashTagsInit();
-
   window.form = {
     readFile: readFile,
     applyEffectDepth: applyEffectDepth,
     send: sendFormData,
-    close: closeEditPhoto
+    close: closeEditPhoto,
+    pictureElement: loadPicture,
+    pictureEffectLevelElement: effectLevel
   };
 })();

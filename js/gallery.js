@@ -13,7 +13,7 @@
     pictureElement.querySelector('.picture__likes').textContent = imageData.likes.toString();
     pictureElement.querySelector('.picture__comments').textContent = imageData.comments.length.toString();
     pictureElement.addEventListener('click', function () {
-      window.pictureView.showBigPicture(imageData);
+      window.pictureView.show(imageData);
     });
     return pictureElement;
   }
@@ -42,12 +42,12 @@
     } else {
       window.gallery.picturesData = data;
       renderPictures(data);
-      window.galleryFilter.initPicturesFilter();
+      window.galleryFilter.init();
     }
   }
 
   function getData() {
-    window.backend.getDataFromServer(URL, onSuccess, onError);
+    window.backend.getData(URL, onSuccess, onError);
   }
 
   downloadErrorButtons[1].textContent = 'Ну и ладно!';
@@ -55,7 +55,10 @@
     window.popup.hide();
     window.gallery.getData();
   });
-  downloadErrorButtons[1].addEventListener('click', window.popup.hide);
+
+  downloadErrorButtons[1].addEventListener('click', function () {
+    window.popup.hide();
+  });
   downloadErrorMessage.addEventListener('click', function (evt) {
     if (evt.target.classList.contains('error')) {
       window.popup.hide();
@@ -67,6 +70,6 @@
   window.gallery = {
     picturesData: [],
     getData: getData,
-    renderPictures: renderPictures
+    render: renderPictures
   };
 })();

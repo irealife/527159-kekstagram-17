@@ -4,24 +4,32 @@
   var FPOP = 'filter-popular';
   var FNEW = 'filter-new';
   var FDIS = 'filter-discussed';
+  var RANDOM_SUBTRAHEND = 0.5;
+  var NEW_PHOTOS_START = 0;
+  var NEW_PHOTOS_MAX = 10;
   var imgFilters = document.querySelector('.img-filters');
   var imgFiltersForm = document.querySelector('.img-filters__form');
   var filterButtons = document.querySelectorAll('.img-filters__button');
   var activeButton = imgFiltersForm.querySelector('.img-filters__button--active');
 
+  function onFilterButtonClick(evt) {
+    var button = evt.target;
+    window.utils.debounce(function () {
+      if (activeButton === button) {
+        return;
+      }
+      activeButton.classList.remove('img-filters__button--active');
+      activeButton = button;
+      activeButton.classList.add('img-filters__button--active');
+      filterPictures(button.id);
+    }).call();
+  }
+
   function initPicturesFilter() {
     imgFilters.classList.remove('img-filters--inactive');
 
     filterButtons.forEach(function (button) {
-      button.addEventListener('click', window.utils.debounce(function () {
-        if (activeButton === button) {
-          return;
-        }
-        activeButton.classList.remove('img-filters__button--active');
-        activeButton = button;
-        activeButton.classList.add('img-filters__button--active');
-        filterPictures(button.id);
-      }));
+      button.addEventListener('click', onFilterButtonClick);
     });
   }
 
@@ -30,7 +38,7 @@
   }
 
   function compareRandom() {
-    return Math.random() - 0.5;
+    return Math.random() - RANDOM_SUBTRAHEND;
   }
 
   function filterPictures(method) {
@@ -41,7 +49,7 @@
         photos = window.gallery.picturesData;
         break;
       case FNEW:
-        photos = tmpPhotos.sort(compareRandom).slice(0, 10);
+        photos = tmpPhotos.sort(compareRandom).slice(NEW_PHOTOS_START, NEW_PHOTOS_MAX);
         break;
       case FDIS:
         photos = tmpPhotos.sort(compareComments);
@@ -50,10 +58,10 @@
         filterPictures(FPOP);
         break;
     }
-    window.gallery.renderPictures(photos);
+    window.gallery.render(photos);
   }
 
   window.galleryFilter = {
-    initPicturesFilter: initPicturesFilter
+    init: initPicturesFilter
   };
 })();

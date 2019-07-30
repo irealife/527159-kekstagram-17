@@ -6,14 +6,16 @@
   var STEP = 25;
   var MIN_SIZE = 25;
   var MAX_SIZE = 100;
-  var currentSize = 100;
+  var SIZE_UP_MULTIPLIER = 1;
+  var SIZE_DOWN_MULTIPLIER = -1;
+  var currentSize = MAX_SIZE;
   var uploadPreviewPhoto = document.querySelector('.img-upload__preview');
   var controlSmall = document.querySelector('.scale__control--smaller');
   var controlBig = document.querySelector('.scale__control--bigger');
   var resizeValue = document.querySelector('.scale__control--value');
 
   function changeScale(size) {
-    uploadPreviewPhoto.style.transform = 'scale(' + size / 100 + ')';
+    uploadPreviewPhoto.style.transform = 'scale(' + size / MAX_SIZE + ')';
   }
 
   function controlScale(direction) {
@@ -28,10 +30,10 @@
   }
 
   controlSmall.addEventListener('click', function () {
-    controlScale(-1);
+    controlScale(SIZE_DOWN_MULTIPLIER);
   });
 
   controlBig.addEventListener('click', function () {
-    controlScale(1);
+    controlScale(SIZE_UP_MULTIPLIER);
   });
 })();
