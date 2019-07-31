@@ -17,14 +17,15 @@
   function hashTagsCheck() {
     validHashTagsArray = [];
     hashTagsArray = hashTagsString.value.toLowerCase().split(' ');
-    for (var i = 0; i < hashTagsArray.length; i++) {
-      if (!hashTagItemCheck(hashTagsArray[i])) {
+    hashTagsArray.some(function (tag) {
+      if (!hashTagItemCheck(tag)) {
         hashTagsString.classList.add('field-error');
-        break;
+        return true;
       } else {
-        validHashTagsArray.push(hashTagsArray[i]);
+        validHashTagsArray.push(tag);
+        return false;
       }
-    }
+    });
   }
 
   function hashTagItemCheck(tag) {
