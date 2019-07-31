@@ -2,8 +2,8 @@
 
 (function () {
   var BIG_PICTURE_COMMENTS_PORTION = 5;
-  var RANDOM_ADDEND = 0.5;
-  var RANDOM_MULTIPLIER = 6;
+  var RANDOM_MULTIPLIER = 0.5;
+  var MAX_AVATARS_AMOUNT = 6;
   var ESCAPE_KEY_CODE = 27;
   var body = document.querySelector('body');
   var bigPicture = document.querySelector('.big-picture');
@@ -25,7 +25,7 @@
     pictureData = imageData;
     document.addEventListener('keydown', onDocumentKeyDown);
     bigPictureImg.src = imageData.url;
-    bigPictureAuthorAvatar.src = 'img/avatar-' + Math.round(RANDOM_ADDEND + Math.random() * RANDOM_MULTIPLIER) + '.svg';
+    bigPictureAuthorAvatar.src = 'img/avatar-' + Math.round(RANDOM_MULTIPLIER + Math.random() * MAX_AVATARS_AMOUNT) + '.svg';
     bigPictureAuthorCaption.textContent = imageData.description;
     bigPictureAuthorLikes.textContent = imageData.likes;
     bigPictureCommentsCountPortion.textContent = BIG_PICTURE_COMMENTS_PORTION.toString();

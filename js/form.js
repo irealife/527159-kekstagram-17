@@ -7,7 +7,7 @@
   var MAX_EFFECT_DEPTH = 100;
   var BLUR_MULTIPLIER = 3;
   var BRIGHTNESS_MULTIPLIER = 2;
-  var BRIGHTNESS_ADDENDUM = 1;
+  var BRIGHTNESS_STEP = 1;
   var uploadURL = 'https://js.dump.academy/kekstagram';
   var overlayPhoto = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level');
@@ -94,7 +94,7 @@
         effectTypeValue = 'blur(' + (value * BLUR_MULTIPLIER) / MAX_EFFECT_DEPTH + 'px)';
         break;
       case 'heat':
-        effectTypeValue = 'brightness(' + (((value * BRIGHTNESS_MULTIPLIER) / MAX_EFFECT_DEPTH) + BRIGHTNESS_ADDENDUM) + ')';
+        effectTypeValue = 'brightness(' + (((value * BRIGHTNESS_MULTIPLIER) / MAX_EFFECT_DEPTH) + BRIGHTNESS_STEP) + ')';
         break;
     }
     loadPicture.style.filter = effectTypeValue;

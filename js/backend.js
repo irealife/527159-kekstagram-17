@@ -2,13 +2,13 @@
 
 (function () {
   var TIMEOUT = 10000;
-  var RESPONSE_OK = 200;
+  var RESPONSE_CODE_OK = 200;
 
   function setXHRMethods(object, onSuccess, onError) {
     object.timeout = TIMEOUT;
 
     object.addEventListener('load', function () {
-      if (object.status === RESPONSE_OK) {
+      if (object.status === RESPONSE_CODE_OK) {
         onSuccess(object.response);
       } else {
         onError('Cтатус ответа: ' + object.status + ' ' + object.statusText);
