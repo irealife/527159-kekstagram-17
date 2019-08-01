@@ -17,15 +17,12 @@
   function hashTagsCheck() {
     validHashTagsArray = [];
     hashTagsArray = hashTagsString.value.toLowerCase().split(' ');
-    hashTagsArray.some(function (tag) {
-      if (!hashTagItemCheck(tag)) {
-        hashTagsString.classList.add('field-error');
-        return true;
-      } else {
-        validHashTagsArray.push(tag);
-        return false;
-      }
+    var failedTag = hashTagsArray.some(function (tag) {
+      return !hashTagItemCheck(tag);
     });
+    if (failedTag) {
+      hashTagsString.classList.add('field-error');
+    }
   }
 
   function hashTagItemCheck(tag) {
@@ -48,6 +45,7 @@
       hashTagsString.setCustomValidity('хештеги не должны повторяться');
     } else {
       validity = true;
+      validHashTagsArray.push(tag);
     }
 
     return validity;
