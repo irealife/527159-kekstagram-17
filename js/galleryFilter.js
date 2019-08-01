@@ -4,7 +4,7 @@
   var FPOP = 'filter-popular';
   var FNEW = 'filter-new';
   var FDIS = 'filter-discussed';
-  var RANDOM_SUBTRAHEND = 0.5;
+  var RANDOM_MIDDLE_RATE = 0.5;
   var NEW_PHOTOS_START = 0;
   var NEW_PHOTOS_MAX = 10;
   var imgFilters = document.querySelector('.img-filters');
@@ -38,7 +38,7 @@
   }
 
   function compareRandom() {
-    return Math.random() - RANDOM_SUBTRAHEND;
+    return Math.random() - RANDOM_MIDDLE_RATE;
   }
 
   function filterPictures(method) {
